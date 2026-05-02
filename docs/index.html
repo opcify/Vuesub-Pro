@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vuesub — audio to subtitles, offline</title>
+    <meta name="description" content="Turn audio and video into accurate subtitles on your Mac. Powered by Whisper, runs entirely offline." />
+    <meta property="og:title" content="Vuesub" />
+    <meta property="og:description" content="Audio to subtitles, offline. Powered by Whisper." />
+    <style>
+      :root {
+        --bg: #1a1a1a;
+        --panel: #232323;
+        --text: rgba(255, 255, 255, 0.92);
+        --text-2: rgba(255, 255, 255, 0.62);
+        --text-3: rgba(255, 255, 255, 0.38);
+        --accent: #4a90ff;
+        --border: #2c2c2c;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter",
+          system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.5;
+      }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 80px 24px 64px; }
+      header { text-align: center; margin-bottom: 64px; }
+      .logo {
+        width: 96px; height: 96px;
+        background: var(--accent);
+        border-radius: 22px;
+        margin: 0 auto 28px;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 700; font-size: 56px; color: white;
+        letter-spacing: -0.04em;
+      }
+      h1 {
+        font-size: 56px;
+        margin: 0 0 12px;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+      }
+      .tagline {
+        font-size: 22px;
+        color: var(--text-2);
+        margin: 0 0 36px;
+        font-weight: 400;
+      }
+      .downloads {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      .btn {
+        background: var(--accent);
+        color: white;
+        text-decoration: none;
+        padding: 14px 22px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: filter 120ms ease-out, transform 120ms ease-out;
+      }
+      .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+      .btn.secondary {
+        background: var(--panel);
+        border: 1px solid var(--border);
+      }
+      .btn .arch { color: rgba(255, 255, 255, 0.65); font-weight: 400; font-size: 13px; }
+      .btn.secondary .arch { color: var(--text-3); }
+      .meta { color: var(--text-3); font-size: 13px; margin-top: 12px; }
+
+      section { margin-top: 80px; }
+      section h2 {
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin: 0 0 24px;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+      }
+      .feature {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+      }
+      .feature h3 { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
+      .feature p { margin: 0; color: var(--text-2); font-size: 14px; }
+
+      .system-req {
+        color: var(--text-2);
+        font-size: 14px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px 24px;
+      }
+      .system-req b { color: var(--text); font-weight: 500; }
+
+      footer {
+        margin-top: 96px;
+        padding-top: 32px;
+        border-top: 1px solid var(--border);
+        color: var(--text-3);
+        font-size: 13px;
+        text-align: center;
+      }
+      footer a { color: var(--text-2); text-decoration: none; }
+      footer a:hover { color: var(--text); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="logo">V</div>
+        <h1>Vuesub</h1>
+        <p class="tagline">Turn audio into subtitles on your Mac. Offline. Private.</p>
+        <div class="downloads">
+          <a class="btn" href="https://github.com/opcify/Vuesub-Pro/releases/latest/download/Vuesub-mac-aarch64.dmg">
+            Download for Mac
+            <span class="arch">Apple Silicon</span>
+          </a>
+          <a class="btn secondary" href="https://github.com/opcify/Vuesub-Pro/releases/latest/download/Vuesub-mac-x64.dmg">
+            Download for Mac
+            <span class="arch">Intel</span>
+          </a>
+        </div>
+        <div class="meta">
+          <a href="https://github.com/opcify/Vuesub-Pro/releases" style="color: inherit;">All releases</a>
+        </div>
+      </header>
+
+      <section>
+        <h2>Why Vuesub</h2>
+        <div class="features">
+          <div class="feature">
+            <h3>Whisper accuracy</h3>
+            <p>OpenAI's Whisper model running locally — multi-lingual, punctuation-aware, no upload.</p>
+          </div>
+          <div class="feature">
+            <h3>FCP-style editor</h3>
+            <p>Waveform timeline, draggable caption clips, inline text editing, multi-select merge.</p>
+          </div>
+          <div class="feature">
+            <h3>Export anywhere</h3>
+            <p>SRT, VTT, plain text, or FCPXML for Final Cut Pro at any frame rate.</p>
+          </div>
+          <div class="feature">
+            <h3>Fully offline</h3>
+            <p>No account, no upload, no telemetry. Your audio never leaves the machine.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>System requirements</h2>
+        <p class="system-req">
+          <b>macOS 11 Big Sur</b> or later. Apple Silicon or Intel.
+          About <b>1 GB free disk</b> for the app + a Whisper model.
+          Models are downloaded on first use; you can pick anywhere from
+          <em>tiny</em> (75 MB) to <em>large-v3</em> (3 GB) depending on
+          accuracy/speed tradeoff you want.
+        </p>
+      </section>
+
+      <footer>
+        © Vuesub · <a href="https://github.com/opcify/Vuesub-Pro/releases">Releases</a>
+      </footer>
+    </div>
+  </body>
+</html>
