@@ -277,6 +277,24 @@
       </section>
 
       <section>
+        <h2>First launch on macOS</h2>
+        <p class="sub">
+          The app isn't yet signed with an Apple Developer ID, so macOS
+          will refuse to open it with <em>"Vuesub is damaged and can't be
+          opened"</em> the first time. Drag <code>Vuesub.app</code> from the
+          DMG into <code>/Applications</code>, then strip the quarantine
+          attribute:
+        </p>
+        <div class="req">
+          <pre style="margin: 0; font-family: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace; font-size: 13px; color: var(--text); overflow-x: auto;">sudo xattr -rd com.apple.quarantine /Applications/Vuesub.app</pre>
+        </div>
+        <p class="sub" style="margin-top: 12px; margin-bottom: 0;">
+          After that, double-click to launch normally. Same effect a
+          Developer-ID signature would have, just done by hand.
+        </p>
+      </section>
+
+      <section>
         <h2>System requirements</h2>
         <div class="req">
           <ul>

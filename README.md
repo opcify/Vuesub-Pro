@@ -118,14 +118,23 @@ faster-whisper / CT2 model directory packaged as a `.zip`.
 
 ### macOS
 
-The app isn't yet signed with an Apple Developer ID, so Gatekeeper will warn
-the first time you open it:
+The app isn't yet signed with an Apple Developer ID. Drag `Vuesub.app`
+from the DMG into your `Applications` folder, then **strip the
+quarantine attribute** that macOS adds to downloaded apps:
 
-1. Drag `Vuesub.app` from the DMG into your `Applications` folder.
-2. Right-click `Vuesub.app` → **Open**.
-3. Click **Open** in the confirmation dialog.
+```bash
+sudo xattr -rd com.apple.quarantine /Applications/Vuesub.app
+```
 
-After the first launch you can open it normally.
+After that, double-click to launch it normally.
+
+> **Why is this necessary?** On macOS 14+ Gatekeeper attaches a
+> `com.apple.quarantine` attribute to anything you download from the
+> web, and for unsigned apps it shows *"Vuesub is damaged and can't be
+> opened"* with no override. The right-click → Open trick no longer
+> works for these. The `xattr -rd` command removes the attribute and
+> tells Gatekeeper to stop second-guessing — same effect that signing
+> with an Apple Developer ID would have, just done by hand.
 
 ### Windows
 
