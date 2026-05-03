@@ -1,11 +1,13 @@
 # Vuesub
 
-**Audio &amp; video to subtitles. Offline by default, cloud-optional.**
+**Audio &amp; video to subtitles, plus voice cloning. Offline by default, cloud-optional.**
 
 Vuesub turns audio and video files into accurate, timestamped subtitles using
 [OpenAI Whisper](https://github.com/openai/whisper) running entirely on your
 machine — or, optionally, via the OpenAI cloud API for the convenience of
-not downloading the model.
+not downloading the model. New in 0.2.0: a **Voice Clone** tab that runs
+zero-shot voice synthesis with [CosyVoice 3](https://github.com/FunAudioLLM/CosyVoice)
+locally — upload a clean clip, type any text, hear it in the same voice.
 
 > **Downloads**
 > - macOS · Apple Silicon: [Vuesub-mac-aarch64.dmg](https://github.com/opcify/Vuesub-Pro/releases/latest/download/Vuesub-mac-aarch64.dmg)
@@ -46,6 +48,40 @@ The interface borrows the design language of pro-app editors (Final Cut Pro,
 Logic Pro): dark chrome, dense panels, monospaced timecodes, a waveform
 timeline with zoom (`⌘+` / `⌘−` / `⌘0`), horizontal scroll for long files.
 `Space` plays / pauses, `⌘Z` undoes the last destructive edit.
+
+## Voice Clone (new)
+
+The **Voice Clone** tab on the left rail runs zero-shot voice synthesis using
+[CosyVoice 3 0.5B](https://github.com/FunAudioLLM/CosyVoice). Upload a 5–30 s
+single-speaker WAV/MP3, type any text in the supported languages (Chinese,
+English, Japanese, Korean, German, Spanish, French, Italian, Russian, +
+18 Chinese dialects), get back the same voice saying it. Cold start on Mac
+CPU is ~60 s; warm subsequent generates are ~3.5× realtime. Output WAVs play
+in-app and can be saved anywhere.
+
+Vuesub auto-transcribes the reference clip with Whisper at registration time
+(picks the largest installed model automatically) so you don't type out what
+your reference says — but the transcript is editable inline because accuracy
+matters: CosyVoice's zero-shot output is sensitive to misalignment between
+the reference text and reference audio.
+
+The CosyVoice runtime is too heavy to bundle (~6.5 GB), so it's installed on
+demand the first time you hit Download. **You'll need three tools on PATH** —
+the page detects what's missing and shows install snippets:
+
+- **Python 3.10–3.12** — `brew install python@3.12` (mac) · [python.org](https://www.python.org/downloads/) (Win) · `apt install python3.12 python3.12-venv` (Linux)
+- **uv** — `curl -LsSf https://astral.sh/uv/install.sh | sh` (mac/Linux) · `irm https://astral.sh/uv/install.ps1 | iex` (Win)
+- **git** — `xcode-select --install` (mac) · [git-scm.com](https://git-scm.com/download/win) (Win) · `apt install git` (Linux)
+
+Storage layout under `~/.vuesub/`: speakers (reference clips + auto
+transcripts) live in `speakers/`, generated clips in `clones/`, the runtime +
+model in `runtimes/cosyvoice/`. The history list on the Voice Clone page
+shows generated clips, capped at 5 visible rows with scroll for the rest.
+
+> **Heads up — Voice Clone is fully tested only on Apple Silicon Mac.** Windows
+> and Linux binaries are produced from CI but the runtime path hasn't been
+> live-tested on those platforms. Please [open an issue](https://github.com/opcify/Vuesub-Pro/issues)
+> if anything breaks.
 
 ## Local first, cloud optional
 

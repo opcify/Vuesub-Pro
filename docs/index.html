@@ -263,6 +263,10 @@
         <h2>Why Vuesub</h2>
         <div class="features">
           <div class="feature">
+            <h3>Voice Clone<span class="badge">new</span></h3>
+            <p>Zero-shot voice cloning powered by CosyVoice 3. Upload a 5–30 s sample, type any text, get back the same voice saying it. Local-only — your samples never leave the machine.</p>
+          </div>
+          <div class="feature">
             <h3>Whisper accuracy, locally</h3>
             <p>Runs OpenAI's Whisper models on your machine via faster-whisper. tiny → large-v3, multilingual, punctuation-aware. No upload required.</p>
           </div>
@@ -331,6 +335,45 @@
               Whisper models · Google Drive mirror →
             </a>
           </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Voice Clone <span class="badge" style="background: rgba(74, 144, 255, 0.18); color: var(--accent-2); padding: 4px 10px; border-radius: 999px; font-size: 12px; vertical-align: 4px;">new</span></h2>
+        <p class="sub">Zero-shot voice cloning with <a href="https://github.com/FunAudioLLM/CosyVoice" style="color: var(--accent-2); text-decoration: none; border-bottom: 1px solid var(--border);">CosyVoice 3 0.5B</a> — upload a clean clip, get back any text in that voice. Switch tabs via the left rail.</p>
+        <div class="formats">
+          <div class="format">
+            <h3>How it works</h3>
+            <ul>
+              <li><b>Upload</b> a 5–30 s WAV / MP3 of a single speaker (≤10 MB). Whisper auto-transcribes the clip — no need to type out what it says.</li>
+              <li><b>Edit if needed.</b> The transcript shows up next to the speaker — fix it if Whisper got it wrong (especially for poetic or accented audio). Accuracy here directly affects synthesis quality.</li>
+              <li><b>Type and Generate.</b> Cold start ≈ 60 s on Mac CPU; subsequent generates with the same speaker are warm at ~3.5× realtime. Output WAVs play in-app and can be saved anywhere.</li>
+              <li><b>Local-only.</b> No cloud option — your reference clips and generated audio never leave the machine.</li>
+            </ul>
+          </div>
+          <div class="format">
+            <h3>One-time setup</h3>
+            <p>The CosyVoice runtime is too heavy to bundle (~6.5 GB). On first model download, Vuesub installs it into <code>~/.vuesub/runtimes/cosyvoice/</code>. You need three tools on PATH first:</p>
+            <ul>
+              <li><b>Python 3.10–3.12</b> · <code>brew install python@3.12</code> on macOS</li>
+              <li><b>uv</b> · <code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></li>
+              <li><b>git</b> · <code>xcode-select --install</code> on macOS</li>
+            </ul>
+            <p>The Voice Clone page detects what's missing and shows install snippets inline.</p>
+          </div>
+          <div class="format">
+            <h3>System requirements</h3>
+            <ul>
+              <li><b>Disk</b> · ≈ 6.5 GB for runtime + model (one-time, lazy install)</li>
+              <li><b>RAM</b> · 8 GB OK, <b>16 GB+ recommended</b> — the loaded model pins ~6 GB</li>
+              <li><b>CPU</b> · works on any Apple Silicon / x64 CPU. GPU acceleration not enabled in v1; synthesis is CPU-bound</li>
+              <li><b>Languages</b> · 9 supported (Chinese, English, Japanese, Korean, German, Spanish, French, Italian, Russian) plus 18+ Chinese dialects</li>
+            </ul>
+          </div>
+          <div class="format">
+            <h3>Heads up — only macOS is tested</h3>
+            <p>v1 is fully exercised on Apple Silicon Mac. Windows x64 and Linux x64 binaries are produced from CI but the Voice Clone runtime path hasn't been live-tested on those platforms. Please <a href="https://github.com/opcify/Vuesub-Pro/issues" style="color: var(--accent-2); text-decoration: none; border-bottom: 1px solid var(--border);">open an issue</a> if anything breaks.</p>
+          </div>
         </div>
       </section>
 
