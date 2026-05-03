@@ -163,6 +163,47 @@
       }
       .models-table tr:last-child td { border-bottom: 0; }
 
+      .formats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+      }
+      .format {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 22px 22px 20px;
+      }
+      .format .ext {
+        font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+        font-size: 13px;
+        color: var(--accent-2);
+        letter-spacing: 0.02em;
+      }
+      .format h3 {
+        margin: 4px 0 8px;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .format .pick {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--success);
+        background: rgba(74, 222, 128, 0.12);
+        padding: 2px 8px;
+        border-radius: 999px;
+        margin-left: 6px;
+        vertical-align: 2px;
+      }
+      .format p { margin: 0 0 10px; color: var(--text-2); font-size: 14px; }
+      .format ul { margin: 0; padding-left: 18px; color: var(--text-2); font-size: 14px; }
+      .format li { margin-bottom: 4px; }
+      .format li b { color: var(--text); font-weight: 600; }
+
       footer {
         margin-top: 96px;
         padding-top: 32px;
@@ -231,7 +272,11 @@
           </div>
           <div class="feature">
             <h3>FCP-style editor</h3>
-            <p>Waveform timeline with per-pixel detail at any zoom, draggable caption clips, inline text edits, multi-select merge, ⌘Z undo.</p>
+            <p>Waveform timeline with per-pixel detail at any zoom, draggable caption clips, inline text edits, multi-select merge, ⌘Z undo. Switching back to a previously-loaded file is instant — the decoded waveform is cached.</p>
+          </div>
+          <div class="feature">
+            <h3>Variable playback speed<span class="badge">new</span></h3>
+            <p>1× / 1.25× / 1.5× / 2× — review long recordings faster without changing pitch. Persists across sessions.</p>
           </div>
           <div class="feature">
             <h3>Plays anything<span class="badge">new</span></h3>
@@ -243,7 +288,7 @@
           </div>
           <div class="feature">
             <h3>16 languages, persisted<span class="badge">new</span></h3>
-            <p>Auto-detect by default, or pin English, 中文 (Mandarin / Cantonese), 日本語, Español, Italiano, Deutsch, ไทย, Русский, 한국어, Nederlands, Français, हिन्दी, العربية, עברית. 简/繁 switch for Chinese transcripts.</p>
+            <p>Auto-detect by default, or pin English, 中文 (Mandarin / Cantonese), 日本語, Español, Italiano, Deutsch, ไทย, Русский, 한국어, Nederlands, Français, हिन्दी, العربية, עברית. Near-instant 简/繁 switch for Chinese transcripts (OpenCC dictionary preloads in the background).</p>
           </div>
           <div class="feature">
             <h3>Export anywhere</h3>
@@ -274,6 +319,63 @@
             <tr><td>openai/whisper-1</td><td>—</td><td>—</td><td>Cloud — uploads compressed audio to OpenAI</td></tr>
           </tbody>
         </table>
+        <div class="req" style="margin-top: 20px;">
+          <b>Model download failing?</b>
+          <p style="margin: 6px 0 0; color: var(--text-2); font-size: 14px;">
+            Only if the in-app downloader fails (network, firewall, Hugging Face
+            unreachable), grab a pre-packaged model from the mirror below and
+            import it via <em>Settings → Models → Import</em>:
+          </p>
+          <p style="margin: 10px 0 0;">
+            <a href="https://drive.google.com/drive/folders/1fBrrqx_LGI4zGyShDLUyFfIsozjT8esc?usp=sharing" style="color: var(--accent-2); text-decoration: none; border-bottom: 1px solid var(--border);">
+              Whisper models · Google Drive mirror →
+            </a>
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Export formats</h2>
+        <p class="sub">Vuesub writes four formats. Two of them — SRT and FCPXML — cover almost every workflow. Pick the one that matches what you'll do next.</p>
+        <div class="formats">
+          <div class="format">
+            <div class="ext">.srt</div>
+            <h3>SRT<span class="pick">Pick this if unsure</span></h3>
+            <p>SubRip — the universal timed-subtitle format. Plain text, numbered cues, <code>HH:MM:SS,mmm</code> ranges. Practically every player and editor accepts it.</p>
+            <ul>
+              <li><b>Players:</b> VLC, IINA, mpv, QuickTime, smart TVs. Drop <code>MyVideo.srt</code> next to <code>MyVideo.mp4</code> and most players load it automatically.</li>
+              <li><b>Upload:</b> YouTube, Vimeo accept SRT directly as a caption track and run auto-translation on top.</li>
+              <li><b>Editors:</b> Premiere Pro, DaVinci Resolve, Final Cut Pro, CapCut, Camtasia — import as a subtitle track with timing intact.</li>
+              <li><b>Burn-in:</b> <code>ffmpeg -vf subtitles=in.srt</code> to bake captions into the video.</li>
+            </ul>
+          </div>
+
+          <div class="format">
+            <div class="ext">.fcpxml</div>
+            <h3>FCPXML<span class="pick">For Final Cut Pro</span></h3>
+            <p>A real Final Cut Pro project (FCPXML 1.11) where every segment is a native, restyleable <code>&lt;caption&gt;</code> on lane 1 — not burnt-in titles.</p>
+            <ul>
+              <li><b>Frame-aligned:</b> offsets and durations snap to the rate you choose, so FCP doesn't show <em>"not on an edit frame boundary"</em> warnings.</li>
+              <li><b>Match your project:</b> pick the same resolution &amp; FPS as your edit. Common picks: <em>iPhone / cameras</em> → 1080p · 30, <em>cinema (24p)</em> → 1080p · 23.976, <em>NTSC broadcast</em> → 1080p · 29.97, <em>PAL</em> → 1080p · 25, <em>4K</em> → 2160p · 30 or 24.</li>
+              <li><b>Import:</b> in FCP, <em>File → Import → XML…</em> — pick the .fcpxml. Captions appear on the timeline; copy them onto your edit.</li>
+              <li>Drop-frame timecode (DF) is used for 29.97 and 59.94, NDF for everything else.</li>
+            </ul>
+          </div>
+
+          <div class="format">
+            <div class="ext">.vtt</div>
+            <h3>VTT</h3>
+            <p>WebVTT — the format browsers expect when you attach captions to an HTML5 <code>&lt;video&gt;</code> with a <code>&lt;track&gt;</code> element. Same shape as SRT, with <code>.</code> instead of <code>,</code> in timestamps and a <code>WEBVTT</code> header.</p>
+            <p>Pick this if you're publishing the video on a website you control and want captions to show without a third-party player.</p>
+          </div>
+
+          <div class="format">
+            <div class="ext">.txt</div>
+            <h3>Plain text</h3>
+            <p>Just the lines, one per segment. No timing.</p>
+            <p>Use it for the <em>content</em>, not the timing — turning a podcast into a blog post, dropping a transcript into Notion or Google Docs, feeding text to search or an LLM, sharing notes with someone who doesn't need the video.</p>
+          </div>
+        </div>
       </section>
 
       <section>
@@ -303,6 +405,18 @@
             <li><b>Linux</b> · x64. Debian/Ubuntu via the .deb. Needs <code>webkit2gtk-4.1</code> at runtime (apt: <code>libwebkit2gtk-4.1-0</code>).</li>
             <li>Roughly <b>1 GB free disk</b> for the app, plus the size of whichever Whisper model you download (tiny → 3 GB).</li>
           </ul>
+        </div>
+      </section>
+
+      <section>
+        <div class="req" style="border-color: rgba(255, 200, 80, 0.25); background: rgba(255, 200, 80, 0.06);">
+          <b>Heads up — Windows &amp; Linux builds are untested.</b>
+          <p style="margin: 6px 0 0; color: var(--text-2); font-size: 14px;">
+            We've shipped Windows x64 and Linux x64 binaries, but they haven't
+            been put through real-world testing yet. If you hit anything broken,
+            please <a href="https://github.com/opcify/Vuesub-Pro/issues" style="color: var(--text-2); border-bottom: 1px solid var(--border);">open an issue</a>
+            so we can fix it.
+          </p>
         </div>
       </section>
 

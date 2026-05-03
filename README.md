@@ -38,7 +38,9 @@ and Vuesub produces a fully-edited subtitle track. From there:
   the third visible row of the transcript so you always have context above
   and lookahead below.
 - **Export to your tool of choice** — SRT, VTT, plain text, or **FCPXML** for
-  Final Cut Pro at any resolution / frame rate.
+  Final Cut Pro at any resolution / frame rate. (See [Export formats](#export-formats)
+  below — the short version: pick **SRT** for almost anything, **FCPXML** for
+  Final Cut Pro.)
 
 The interface borrows the design language of pro-app editors (Final Cut Pro,
 Logic Pro): dark chrome, dense panels, monospaced timecodes, a waveform
@@ -78,6 +80,84 @@ containers (notably WebM with Opus on macOS) aren't accepted by the system's
 native audio player; Vuesub transparently falls back to a Web Audio playback
 path so the file plays anyway.
 
+## Export formats
+
+When you click **Export**, Vuesub asks where to save and writes the transcript
+in one of four formats. The two that cover almost every real workflow are
+**SRT** and **FCPXML** — the others are situational.
+
+### SRT — the universal subtitle file *(pick this if you're not sure)*
+
+SubRip (`.srt`) is the lowest common denominator for timed subtitles. It's
+plain text: a number, a `HH:MM:SS,mmm --> HH:MM:SS,mmm` range, and the line.
+Almost everything that plays or edits video accepts it:
+
+- **Video players** — VLC, IINA, mpv, QuickTime (with a plugin), every smart
+  TV / set-top box that supports external subs. Drop `MyVideo.srt` next to
+  `MyVideo.mp4` with the same base name and most players pick it up
+  automatically.
+- **YouTube / Vimeo** — upload as a caption track on a video; both platforms
+  ingest SRT directly and run their auto-translation on top.
+- **Editors** — Premiere Pro, DaVinci Resolve, CapCut, Final Cut Pro,
+  Camtasia, ScreenFlow: import as a caption / subtitle track and it lands
+  with timing intact. (For FCP specifically, **FCPXML** below preserves
+  more — see when to prefer it.)
+- **Generated content** — feed the SRT into burn-in tools (`ffmpeg
+  -vf subtitles=…`), translation tools, or a script that turns it into a
+  blog post.
+
+If you don't know what your downstream tool expects, export SRT first.
+
+### FCPXML — native captions for Final Cut Pro
+
+FCPXML is Apple's project interchange format. Vuesub writes a tiny FCPXML 1.11
+project where every segment is a real, native FCP `<caption>` clip on lane 1
+of an empty timeline. That means after you import it into FCP:
+
+- Each segment is a separate caption you can restyle, retime, or
+  re-translate using the built-in caption editor — not baked-in graphics
+  text.
+- Captions are **frame-aligned to the rate you pick**, so FCP doesn't pop
+  up *"caption is not on an edit frame boundary"* warnings or silently
+  nudge them.
+- The timeline arrives at the resolution and frame rate you chose, which
+  also sets the timecode format (NDF vs. drop-frame for 29.97 / 59.94).
+
+When the dialog appears, **match your video project's resolution and frame
+rate exactly.** Common picks:
+
+| Project                                             | Choose                |
+| --------------------------------------------------- | --------------------- |
+| iPhone / most modern cameras                        | 1080p · 30 (or 60)    |
+| Cinema / film look (24p deliverables)               | 1080p · 23.976        |
+| Broadcast US (NTSC)                                 | 1080p · 29.97 or 59.94 |
+| Broadcast Europe (PAL)                              | 1080p · 25 or 50      |
+| 4K phone footage / pro cameras                      | 2160p · 30 or 24      |
+
+Workflow: in FCP, open your project → **File → Import → XML…** → pick
+Vuesub's `.fcpxml`. The captions appear as their own caption clip on the
+timeline; copy them onto your edit and they snap to the same timeline.
+Vuesub remembers your last resolution / FPS choice across launches.
+
+### VTT — for HTML5 `<video>` and the web
+
+WebVTT (`.vtt`) is the format browsers expect when you attach captions
+to an HTML5 `<video>` with a `<track>` element. Same idea as SRT, slightly
+different syntax (uses `.` instead of `,` in timestamps and starts with
+a `WEBVTT` header). Pick this if you're publishing the video to a website
+you control and want captions to show in the browser without a third-party
+player.
+
+### TXT — plain transcript, no timing
+
+`.txt` is just the lines, one per segment, with all timing stripped. Use it
+when you need the *content*, not the timing — turning a podcast into a
+blog post, dropping a transcript into Notion / Google Docs, feeding text
+to a search index or an LLM, sending notes to someone who doesn't need
+the video.
+
+---
+
 ## Languages
 
 Auto-detect by default, or pick a fixed language for higher accuracy:
@@ -103,6 +183,11 @@ faster-whisper / CT2 model directory packaged as a `.zip`.
 | `medium`    | ~1.5 GB  | ~5 GB  | Strong accuracy on most audio            |
 | `large-v3`  | ~3.1 GB  | ~10 GB | Best quality; needs a beefy machine      |
 | `whisper-1` | —        | —      | OpenAI cloud (requires API key)          |
+
+> **Model download failing?** Only if the in-app downloader can't reach
+> Hugging Face (network, firewall, region block), grab a pre-packaged model
+> from our mirror and import it via *Settings → Models → Import*:
+> [Whisper models · Google Drive mirror](https://drive.google.com/drive/folders/1fBrrqx_LGI4zGyShDLUyFfIsozjT8esc?usp=sharing).
 
 ## System requirements
 
@@ -156,3 +241,12 @@ terminal.
 Vuesub is proprietary software. See `LICENSE.txt` (where applicable) for
 end-user terms. Bundled open-source components keep their original licenses;
 attribution is included with the application.
+
+---
+
+> ⚠️ **Heads up — Windows & Linux builds are untested.** We ship Windows x64
+> and Linux x64 binaries from CI, but they haven't gone through real-world
+> testing yet. macOS (Apple Silicon) is the only daily-driven build right
+> now. If you hit anything broken on Windows or Linux, please
+> [open an issue](https://github.com/opcify/Vuesub-Pro/issues) so we can
+> fix it.
