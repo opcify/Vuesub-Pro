@@ -3,311 +3,740 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vuesub — audio to subtitles, on your machine</title>
-    <meta name="description" content="Turn audio and video into accurate subtitles on macOS, Windows, and Linux. Powered by Whisper — runs entirely offline, with optional OpenAI cloud transcription." />
+    <title>Vuesub — audio to subtitles & voice cloning, on your machine</title>
+    <meta name="description" content="Turn audio and video into accurate subtitles, and clone any voice from a short sample. Runs entirely on your machine — Whisper for captions, CosyVoice 3 for voice cloning. macOS, Windows, Linux." />
     <meta property="og:title" content="Vuesub" />
-    <meta property="og:description" content="Audio to subtitles. Offline by default, cloud-optional. Powered by Whisper." />
+    <meta property="og:description" content="Audio to subtitles + zero-shot voice cloning. Offline by default. Whisper · CosyVoice 3." />
     <meta property="og:type" content="website" />
     <style>
       :root {
-        --bg: #1a1a1a;
-        --panel: #232323;
-        --panel-2: #2a2a2a;
-        --text: rgba(255, 255, 255, 0.92);
-        --text-2: rgba(255, 255, 255, 0.62);
-        --text-3: rgba(255, 255, 255, 0.38);
+        --bg: #0b0b0d;
+        --bg-2: #111114;
+        --panel: #16161a;
+        --panel-2: #1c1c22;
+        --text: rgba(255, 255, 255, 0.95);
+        --text-2: rgba(255, 255, 255, 0.66);
+        --text-3: rgba(255, 255, 255, 0.42);
         --accent: #4a90ff;
-        --accent-2: #6aa6ff;
-        --border: #2c2c2c;
+        --accent-2: #7ab0ff;
+        --border: rgba(255, 255, 255, 0.08);
+        --border-soft: rgba(255, 255, 255, 0.05);
         --success: #4ade80;
+        --warn: #f5a04b;
+
+        --max: 1100px;
+        --section-y: 112px;
+        --radius: 12px;
+        --radius-sm: 8px;
+
+        --fs-hero: 64px;
+        --fs-h2: 36px;
+        --fs-h3: 18px;
+        --fs-body: 16px;
+        --fs-small: 14px;
+        --fs-xs: 12px;
+
+        --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter",
+          system-ui, sans-serif;
+        --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
       }
+
       * { box-sizing: border-box; }
       html, body {
         margin: 0;
         padding: 0;
         background: var(--bg);
         color: var(--text);
-        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter",
-          system-ui, sans-serif;
+        font-family: var(--font);
+        font-size: var(--fs-body);
+        line-height: 1.6;
         -webkit-font-smoothing: antialiased;
-        line-height: 1.5;
+        -moz-osx-font-smoothing: grayscale;
       }
-      .wrap { max-width: 920px; margin: 0 auto; padding: 80px 24px 64px; }
-      header { text-align: center; margin-bottom: 64px; }
-      .logo {
-        width: 96px; height: 96px;
-        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-        border-radius: 22px;
-        margin: 0 auto 28px;
+      a { color: inherit; text-decoration: none; }
+      ::selection { background: rgba(74, 144, 255, 0.3); }
+
+      /* ─── Sticky nav ─── */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(11, 11, 13, 0.78);
+        backdrop-filter: saturate(180%) blur(14px);
+        -webkit-backdrop-filter: saturate(180%) blur(14px);
+        border-bottom: 1px solid var(--border-soft);
+      }
+      .nav-inner {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        gap: 28px;
+      }
+      .nav-logo {
+        display: flex; align-items: center; gap: 10px;
+        font-weight: 600; font-size: 16px;
+        letter-spacing: -0.01em;
+      }
+      .nav-mark {
+        width: 26px; height: 26px;
+        border-radius: 7px;
+        background: linear-gradient(135deg, var(--accent), #2563eb);
+        color: white;
         display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: 56px; color: white;
-        letter-spacing: -0.04em;
-        box-shadow: 0 12px 36px rgba(74, 144, 255, 0.32);
+        font-weight: 700; font-size: 14px;
+        box-shadow: 0 4px 12px rgba(74, 144, 255, 0.32);
       }
-      h1 {
-        font-size: 56px;
-        margin: 0 0 12px;
-        font-weight: 600;
-        letter-spacing: -0.03em;
-      }
-      .tagline {
-        font-size: 22px;
+      .nav-links {
+        display: flex; gap: 22px;
+        flex: 1;
+        font-size: 14px;
         color: var(--text-2);
-        margin: 0 0 36px;
-        font-weight: 400;
+      }
+      .nav-links a:hover { color: var(--text); }
+      .nav-cta {
+        background: var(--accent);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        transition: filter 120ms ease-out, transform 120ms ease-out;
+      }
+      .nav-cta:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+      .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+      /* ─── Hero ─── */
+      .hero {
+        padding: 96px 0 80px;
+        text-align: center;
+      }
+      .hero-eyebrow {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent-2);
+        background: rgba(74, 144, 255, 0.1);
+        padding: 6px 14px;
+        border-radius: 999px;
+        margin-bottom: 28px;
+      }
+      .hero h1 {
+        font-size: var(--fs-hero);
+        line-height: 1.04;
+        letter-spacing: -0.035em;
+        margin: 0 0 22px;
+        font-weight: 600;
+      }
+      .hero h1 .grad {
+        background: linear-gradient(135deg, #fff 0%, #c4d4ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero p {
+        font-size: 19px;
+        color: var(--text-2);
+        max-width: 680px;
+        margin: 0 auto 40px;
+        line-height: 1.55;
       }
       .downloads {
         display: flex;
-        gap: 12px;
+        gap: 10px;
         justify-content: center;
         flex-wrap: wrap;
-        margin-bottom: 12px;
+        margin-bottom: 18px;
       }
       .btn {
         background: var(--accent);
         color: white;
         text-decoration: none;
-        padding: 12px 20px;
+        padding: 12px 18px;
         border-radius: 10px;
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 500;
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        transition: filter 120ms ease-out, transform 120ms ease-out;
+        transition: filter 120ms ease-out, transform 120ms ease-out, box-shadow 120ms ease-out;
+        box-shadow: 0 6px 18px rgba(74, 144, 255, 0.22);
       }
-      .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+      .btn:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 8px 22px rgba(74, 144, 255, 0.3); }
       .btn.secondary {
-        background: var(--panel);
+        background: var(--panel-2);
         border: 1px solid var(--border);
+        box-shadow: none;
       }
-      .btn .arch { color: rgba(255, 255, 255, 0.65); font-weight: 400; font-size: 13px; }
+      .btn.secondary:hover { background: var(--panel); box-shadow: none; }
+      .btn .arch { color: rgba(255, 255, 255, 0.65); font-weight: 400; font-size: 12px; }
       .btn.secondary .arch { color: var(--text-3); }
-      .btn .os-icon { width: 18px; height: 18px; opacity: 0.95; }
-      .meta { color: var(--text-3); font-size: 13px; margin-top: 12px; }
-      .meta a { color: var(--text-2); text-decoration: none; border-bottom: 1px solid var(--border); }
+      .btn .os-icon { width: 16px; height: 16px; opacity: 0.95; }
+      .meta {
+        color: var(--text-3); font-size: 13px;
+      }
+      .meta a { color: var(--text-2); border-bottom: 1px solid var(--border); }
       .meta a:hover { color: var(--text); }
+      .trust {
+        margin-top: 24px;
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        flex-wrap: wrap;
+        color: var(--text-3);
+        font-size: 13px;
+      }
+      .trust span { display: inline-flex; align-items: center; gap: 6px; }
+      .trust svg { color: var(--success); flex-shrink: 0; }
 
-      section { margin-top: 80px; }
-      section h2 {
-        font-size: 28px;
+      /* ─── Section base ─── */
+      section.s {
+        padding: var(--section-y) 0;
+        border-top: 1px solid var(--border-soft);
+      }
+      .s-head { margin-bottom: 56px; max-width: 760px; }
+      .s-head h2 {
+        font-size: var(--fs-h2);
         font-weight: 600;
-        letter-spacing: -0.02em;
-        margin: 0 0 24px;
+        letter-spacing: -0.025em;
+        margin: 0 0 14px;
       }
-      section .sub {
+      .s-head p {
+        font-size: 17px;
         color: var(--text-2);
-        font-size: 15px;
-        margin: -16px 0 24px;
+        margin: 0;
+        line-height: 1.55;
       }
 
-      .features {
+      /* ─── Two-pillar feature row ─── */
+      .pillars {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 16px;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
       }
-      .feature {
-        background: var(--panel);
+      .pillar {
+        background: linear-gradient(180deg, var(--panel) 0%, var(--bg-2) 100%);
         border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 20px;
+        border-radius: var(--radius);
+        padding: 32px 30px;
       }
-      .feature h3 { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
-      .feature p { margin: 0; color: var(--text-2); font-size: 14px; }
-      .feature .badge {
-        display: inline-block;
-        font-size: 11px;
+      .pillar-icon {
+        width: 44px; height: 44px;
+        border-radius: 10px;
+        background: rgba(74, 144, 255, 0.12);
+        color: var(--accent-2);
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 18px;
+      }
+      .pillar h3 {
+        font-size: 22px;
         font-weight: 600;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: var(--success);
-        background: rgba(74, 222, 128, 0.12);
-        padding: 2px 8px;
-        border-radius: 999px;
-        margin-left: 6px;
-        vertical-align: 1px;
+        letter-spacing: -0.015em;
+        margin: 0 0 10px;
+      }
+      .pillar p {
+        color: var(--text-2);
+        margin: 0 0 18px;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .pillar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-2);
+      }
+      .pillar li {
+        padding: 6px 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .pillar li::before {
+        content: "";
+        width: 4px; height: 4px;
+        border-radius: 50%;
+        background: var(--accent-2);
+        margin-top: 9px;
+        flex-shrink: 0;
       }
 
-      .req {
-        color: var(--text-2);
-        font-size: 14px;
+      /* ─── Numbered "how it works" ─── */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+      .step {
         background: var(--panel);
         border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 22px 24px;
+        border-radius: var(--radius);
+        padding: 28px;
       }
-      .req b { color: var(--text); font-weight: 600; }
-      .req ul { margin: 8px 0 0; padding-left: 20px; }
-      .req li { margin-bottom: 4px; }
+      .step-num {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--accent-2);
+        margin-bottom: 14px;
+      }
+      .step h3 {
+        font-size: var(--fs-h3);
+        font-weight: 600;
+        margin: 0 0 8px;
+      }
+      .step p {
+        color: var(--text-2);
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.6;
+      }
 
+      /* ─── Models table ─── */
       .models-table {
         width: 100%;
         border-collapse: collapse;
         font-size: 14px;
+        background: var(--panel);
+        border-radius: var(--radius);
+        overflow: hidden;
+        border: 1px solid var(--border);
       }
       .models-table th, .models-table td {
         text-align: left;
-        padding: 10px 12px;
-        border-bottom: 1px solid var(--border);
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border-soft);
       }
       .models-table th {
         color: var(--text-3);
         font-weight: 600;
-        font-size: 12px;
-        letter-spacing: 0.06em;
+        font-size: 11px;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
+        background: var(--bg-2);
       }
       .models-table td:first-child {
-        font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+        font-family: var(--font-mono);
         color: var(--text);
+        font-size: 13px;
       }
       .models-table tr:last-child td { border-bottom: 0; }
+      .models-table td.note { color: var(--text-2); }
 
+      .callout {
+        margin-top: 24px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px 24px;
+        font-size: 14px;
+        color: var(--text-2);
+      }
+      .callout b { color: var(--text); }
+      .callout a {
+        color: var(--accent-2);
+        border-bottom: 1px solid var(--border);
+      }
+      .callout a:hover { color: var(--text); }
+      .callout.warn {
+        border-color: rgba(245, 160, 75, 0.25);
+        background: rgba(245, 160, 75, 0.05);
+      }
+
+      /* ─── Prereqs grid ─── */
+      .prereqs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+      .prereq {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px;
+      }
+      .prereq h4 {
+        font-family: var(--font-mono);
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0 0 6px;
+        color: var(--text);
+      }
+      .prereq .why {
+        font-size: 13px;
+        color: var(--text-3);
+        margin: 0 0 14px;
+      }
+      .prereq pre {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--text-2);
+        background: var(--bg-2);
+        border: 1px solid var(--border-soft);
+        border-radius: 6px;
+        padding: 10px 12px;
+        overflow-x: auto;
+      }
+
+      /* ─── Languages grid ─── */
+      .langs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 8px;
+      }
+      .lang-pill {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 14px;
+        text-align: center;
+        color: var(--text-2);
+      }
+
+      /* ─── Formats ─── */
       .formats {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 16px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
       }
       .format {
         background: var(--panel);
         border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 22px 22px 20px;
+        border-radius: var(--radius);
+        padding: 24px 26px;
       }
       .format .ext {
-        font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
-        font-size: 13px;
+        font-family: var(--font-mono);
+        font-size: 12px;
         color: var(--accent-2);
-        letter-spacing: 0.02em;
+        letter-spacing: 0.04em;
       }
       .format h3 {
         margin: 4px 0 8px;
-        font-size: 18px;
+        font-size: 19px;
         font-weight: 600;
         letter-spacing: -0.01em;
       }
       .format .pick {
         display: inline-block;
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.04em;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
         color: var(--success);
         background: rgba(74, 222, 128, 0.12);
-        padding: 2px 8px;
+        padding: 3px 8px;
         border-radius: 999px;
-        margin-left: 6px;
+        margin-left: 8px;
         vertical-align: 2px;
       }
-      .format p { margin: 0 0 10px; color: var(--text-2); font-size: 14px; }
-      .format ul { margin: 0; padding-left: 18px; color: var(--text-2); font-size: 14px; }
-      .format li { margin-bottom: 4px; }
+      .format p { margin: 0 0 10px; color: var(--text-2); font-size: 14px; line-height: 1.6; }
+      .format ul { margin: 6px 0 0; padding-left: 18px; color: var(--text-2); font-size: 13px; line-height: 1.7; }
       .format li b { color: var(--text); font-weight: 600; }
 
+      /* ─── Code-block style for the macOS quarantine block ─── */
+      pre.code {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: var(--text);
+        background: var(--bg-2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 14px 16px;
+        overflow-x: auto;
+        line-height: 1.6;
+      }
+
+      /* ─── Footer ─── */
       footer {
-        margin-top: 96px;
-        padding-top: 32px;
-        border-top: 1px solid var(--border);
+        margin-top: 40px;
+        padding: 56px 0 40px;
+        border-top: 1px solid var(--border-soft);
+        background: var(--bg-2);
+      }
+      .footer-grid {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 24px;
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr 1fr;
+        gap: 36px;
+      }
+      .footer-brand p {
         color: var(--text-3);
         font-size: 13px;
-        text-align: center;
+        margin: 12px 0 0;
+        max-width: 280px;
+        line-height: 1.6;
       }
-      footer a { color: var(--text-2); text-decoration: none; }
-      footer a:hover { color: var(--text); }
+      .footer-col h5 {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-3);
+        margin: 0 0 14px;
+      }
+      .footer-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+      .footer-col a { color: var(--text-2); font-size: 14px; }
+      .footer-col a:hover { color: var(--text); }
+      .footer-bottom {
+        max-width: var(--max);
+        margin: 36px auto 0;
+        padding: 24px 24px 0;
+        border-top: 1px solid var(--border-soft);
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--text-3);
+      }
 
-      @media (max-width: 600px) {
-        .wrap { padding: 56px 18px 48px; }
-        h1 { font-size: 42px; }
-        .tagline { font-size: 18px; }
-        .btn { padding: 10px 16px; font-size: 14px; }
+      /* ─── Responsive ─── */
+      @media (max-width: 820px) {
+        :root { --fs-hero: 44px; --fs-h2: 28px; --section-y: 80px; }
+        .hero { padding: 64px 0 56px; }
+        .pillars, .steps, .prereqs, .formats { grid-template-columns: 1fr; }
+        .footer-grid { grid-template-columns: 1fr 1fr; }
+        .footer-brand { grid-column: 1 / -1; }
+        .nav-links { display: none; }
       }
     </style>
   </head>
   <body>
-    <div class="wrap">
-      <header>
-        <div class="logo">V</div>
-        <h1>Vuesub</h1>
-        <p class="tagline">
-          Turn audio &amp; video into subtitles. Offline by default, cloud-optional.
-        </p>
-        <div class="downloads">
-          <a class="btn" href="https://github.com/opcify/Vuesub-Pro/releases/latest/download/Vuesub-mac-aarch64.dmg">
-            <svg class="os-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.32-.04-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.197-2.99.792-.91 2.142-1.58 3.144-1.62.018.13.018.27.018.4zm5.014 17.93c-.5 1.16-.738 1.68-1.382 2.71-.898 1.45-2.166 3.25-3.738 3.27-1.397.02-1.756-.91-3.654-.9-1.898.01-2.293.92-3.692.91-1.572-.02-2.774-1.65-3.672-3.1-2.514-4.06-2.778-8.83-1.227-11.36 1.103-1.79 2.844-2.84 4.48-2.84 1.667 0 2.715.91 4.094.91 1.337 0 2.152-.91 4.077-.91 1.456 0 2.998.79 4.097 2.16-3.6 1.97-3.014 7.11.617 9.15z"/>
-            </svg>
-            Mac
-            <span class="arch">Apple Silicon</span>
-          </a>
-          <a class="btn" href="https://github.com/opcify/Vuesub-Pro/releases/latest/download/Vuesub-windows-x64-setup.exe">
-            <svg class="os-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M3 5.55 11 4.4v7.1H3V5.55zm0 12.9V12h8v6.6L3 17.45zM12 4.27 22 3v8.5H12V4.27zM12 12h10v8.73L12 19.4V12z"/>
-            </svg>
-            Windows
-            <span class="arch">x64 · setup.exe</span>
-          </a>
-          <a class="btn" href="https://github.com/opcify/Vuesub-Pro/releases/latest/download/Vuesub-linux-x64.deb">
-            <svg class="os-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 1.5c-2.6 0-3.5 2.1-3.5 4 0 1 .2 1.9.2 2.7 0 .8-.5 1.5-1.2 2.3-1.4 1.4-3.5 3.4-3.5 6 0 1.4.8 2.6 1.7 3.4-.5.5-.8 1.1-.8 1.9 0 1 .7 1.7 1.7 2 .8.3 1.7.5 2.6.6.5.1 1 .3 1.5.7.5.4 1.4.6 2.3.6.9 0 1.8-.2 2.3-.6.5-.4 1-.6 1.5-.7.9-.1 1.8-.3 2.6-.6 1-.3 1.7-1 1.7-2 0-.8-.3-1.4-.8-1.9.9-.8 1.7-2 1.7-3.4 0-2.6-2.1-4.6-3.5-6-.7-.8-1.2-1.5-1.2-2.3 0-.8.2-1.7.2-2.7 0-1.9-.9-4-3.5-4zM10.7 5c.5 0 1 .5 1 1 0 .5-.5.5-1 .5s-1 0-1-.5c0-.5.5-1 1-1zm2.6 0c.5 0 1 .5 1 1 0 .5-.5.5-1 .5s-1 0-1-.5c0-.5.5-1 1-1zM12 9c.8 0 1.4.6 1.4 1.4 0 .5-.6.6-1.4.6s-1.4-.1-1.4-.6c0-.8.6-1.4 1.4-1.4z"/>
-            </svg>
-            Linux
-            <span class="arch">x64 · .deb</span>
-          </a>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="nav-logo" href="#top">
+          <span class="nav-mark">V</span>
+          <span>Vuesub</span>
+        </a>
+        <div class="nav-links">
+          <a href="#voice-clone">Voice Clone</a>
+          <a href="#caption">Caption</a>
+          <a href="#models">Models</a>
+          <a href="#export">Export</a>
+          <a href="#requirements">Requirements</a>
         </div>
-        <div class="meta">
-          <a href="https://github.com/opcify/Vuesub-Pro/releases">All releases &amp; release notes</a>
-        </div>
-      </header>
+        <a class="nav-cta" href="https://github.com/opcify/Vuesub-Pro/releases/latest">
+          Download
+        </a>
+      </div>
+    </nav>
 
-      <section>
-        <h2>Why Vuesub</h2>
-        <div class="features">
-          <div class="feature">
-            <h3>Voice Clone<span class="badge">new</span></h3>
-            <p>Zero-shot voice cloning powered by CosyVoice 3. Upload a 5–30 s sample, type any text, get back the same voice saying it. Local-only — your samples never leave the machine.</p>
+    <a id="top"></a>
+    <header class="wrap hero">
+      <span class="hero-eyebrow">v0.2.0 · Voice Clone is here</span>
+      <h1>
+        <span class="grad">Subtitles &amp; voice cloning,</span><br />
+        <span class="grad">on your machine.</span>
+      </h1>
+      <p>
+        Vuesub turns audio &amp; video into accurate subtitles with
+        Whisper, and clones any voice from a short clip with CosyVoice 3.
+        Runs entirely offline. No accounts, no telemetry, no upload required.
+      </p>
+      <div class="downloads">
+        <a class="btn" href="https://github.com/opcify/Vuesub-Pro/releases/latest/download/Vuesub-mac-aarch64.dmg">
+          <svg class="os-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.32-.04-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.197-2.99.792-.91 2.142-1.58 3.144-1.62.018.13.018.27.018.4zm5.014 17.93c-.5 1.16-.738 1.68-1.382 2.71-.898 1.45-2.166 3.25-3.738 3.27-1.397.02-1.756-.91-3.654-.9-1.898.01-2.293.92-3.692.91-1.572-.02-2.774-1.65-3.672-3.1-2.514-4.06-2.778-8.83-1.227-11.36 1.103-1.79 2.844-2.84 4.48-2.84 1.667 0 2.715.91 4.094.91 1.337 0 2.152-.91 4.077-.91 1.456 0 2.998.79 4.097 2.16-3.6 1.97-3.014 7.11.617 9.15z"/>
+          </svg>
+          Mac
+          <span class="arch">Apple Silicon</span>
+        </a>
+        <a class="btn secondary" href="https://github.com/opcify/Vuesub-Pro/releases/latest/download/Vuesub-windows-x64-setup.exe">
+          <svg class="os-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M3 5.55 11 4.4v7.1H3V5.55zm0 12.9V12h8v6.6L3 17.45zM12 4.27 22 3v8.5H12V4.27zM12 12h10v8.73L12 19.4V12z"/>
+          </svg>
+          Windows
+          <span class="arch">x64 · setup.exe</span>
+        </a>
+        <a class="btn secondary" href="https://github.com/opcify/Vuesub-Pro/releases/latest/download/Vuesub-linux-x64.deb">
+          <svg class="os-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 1.5c-2.6 0-3.5 2.1-3.5 4 0 1 .2 1.9.2 2.7 0 .8-.5 1.5-1.2 2.3-1.4 1.4-3.5 3.4-3.5 6 0 1.4.8 2.6 1.7 3.4-.5.5-.8 1.1-.8 1.9 0 1 .7 1.7 1.7 2 .8.3 1.7.5 2.6.6.5.1 1 .3 1.5.7.5.4 1.4.6 2.3.6.9 0 1.8-.2 2.3-.6.5-.4 1-.6 1.5-.7.9-.1 1.8-.3 2.6-.6 1-.3 1.7-1 1.7-2 0-.8-.3-1.4-.8-1.9.9-.8 1.7-2 1.7-3.4 0-2.6-2.1-4.6-3.5-6-.7-.8-1.2-1.5-1.2-2.3 0-.8.2-1.7.2-2.7 0-1.9-.9-4-3.5-4z"/>
+          </svg>
+          Linux
+          <span class="arch">x64 · .deb</span>
+        </a>
+      </div>
+      <div class="meta">
+        <a href="https://github.com/opcify/Vuesub-Pro/releases">All releases &amp; release notes</a>
+      </div>
+      <div class="trust">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> No account, no telemetry</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Runs offline by default</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> macOS · Windows · Linux</span>
+      </div>
+    </header>
+
+    <!-- ─── Two-pillar overview ─── -->
+    <section class="s">
+      <div class="wrap">
+        <div class="s-head">
+          <h2>Two tools, one app.</h2>
+          <p>
+            Switch between Caption and Voice Clone with a click on the left rail.
+            Both run on your machine — no signups, no uploads.
+          </p>
+        </div>
+        <div class="pillars">
+          <div class="pillar">
+            <div class="pillar-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 4h10l4 4v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/>
+                <path d="M14 4v5h5"/>
+                <path d="M8 13h8M8 17h6"/>
+              </svg>
+            </div>
+            <h3>Caption</h3>
+            <p>Drop in audio or video, pick a Whisper model, get a fully-edited subtitle track. Built for creators, podcasters, and anyone who needs accurate timed text.</p>
+            <ul>
+              <li>Editable transcript with draggable caption clips on a waveform</li>
+              <li>SRT, VTT, plain text, or FCPXML for Final Cut Pro</li>
+              <li>16 languages auto-detected, including Mandarin / Cantonese</li>
+              <li>Optional cloud route via OpenAI <code>whisper-1</code></li>
+            </ul>
           </div>
-          <div class="feature">
-            <h3>Whisper accuracy, locally</h3>
-            <p>Runs OpenAI's Whisper models on your machine via faster-whisper. tiny → large-v3, multilingual, punctuation-aware. No upload required.</p>
-          </div>
-          <div class="feature">
-            <h3>Cloud option<span class="badge">new</span></h3>
-            <p>Drop in your OpenAI API key in Settings to optionally route through whisper-1. Audio is auto-transcoded to 16 kbps Opus before upload to keep it tiny.</p>
-          </div>
-          <div class="feature">
-            <h3>FCP-style editor</h3>
-            <p>Waveform timeline with per-pixel detail at any zoom, draggable caption clips, inline text edits, multi-select merge, ⌘Z undo. Switching back to a previously-loaded file is instant — the decoded waveform is cached.</p>
-          </div>
-          <div class="feature">
-            <h3>Variable playback speed<span class="badge">new</span></h3>
-            <p>1× / 1.25× / 1.5× / 2× — review long recordings faster without changing pitch. Persists across sessions.</p>
-          </div>
-          <div class="feature">
-            <h3>Plays anything<span class="badge">new</span></h3>
-            <p>WebM with Opus and AV1, MKV, FLAC, .ogg — Vuesub falls back to a Web Audio path when your system can't play a container natively.</p>
-          </div>
-          <div class="feature">
-            <h3>Model manager<span class="badge">new</span></h3>
-            <p>Download, delete, or import Whisper models from the Settings panel. Watch byte-level progress + ETA. Drop in a custom CT2 model as a .zip.</p>
-          </div>
-          <div class="feature">
-            <h3>16 languages, persisted<span class="badge">new</span></h3>
-            <p>Auto-detect by default, or pin English, 中文 (Mandarin / Cantonese), 日本語, Español, Italiano, Deutsch, ไทย, Русский, 한국어, Nederlands, Français, हिन्दी, العربية, עברית. Near-instant 简/繁 switch for Chinese transcripts (OpenCC dictionary preloads in the background).</p>
-          </div>
-          <div class="feature">
-            <h3>Export anywhere</h3>
-            <p>SRT, VTT, plain text, or FCPXML for Final Cut Pro at any frame rate / resolution. Captions land on the right edit-frame boundary.</p>
-          </div>
-          <div class="feature">
-            <h3>Offline &amp; private</h3>
-            <p>Local mode never leaves your machine. No account, no telemetry. Cloud mode only sends what you explicitly choose to send.</p>
+          <div class="pillar">
+            <div class="pillar-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <line x1="4"  y1="10" x2="4"  y2="14"/>
+                <line x1="8"  y1="6"  x2="8"  y2="18"/>
+                <line x1="12" y1="3"  x2="12" y2="21"/>
+                <line x1="16" y1="6"  x2="16" y2="18"/>
+                <line x1="20" y1="10" x2="20" y2="14"/>
+              </svg>
+            </div>
+            <h3>Voice Clone <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-2); background: rgba(74, 144, 255, 0.12); padding: 2px 8px; border-radius: 999px; margin-left: 8px; vertical-align: 3px;">new</span></h3>
+            <p>Upload a 5–30 second clip of one speaker, type any text, hear the same voice say it back. Powered by CosyVoice 3 — runs locally, your reference clips never leave the machine.</p>
+            <ul>
+              <li>Zero-shot cloning — no fine-tuning, no training data</li>
+              <li>9 languages: 中文 · English · 日本語 · 한국어 · Deutsch · Español · Français · Italiano · Русский</li>
+              <li>Whisper auto-transcribes the reference; transcript is editable inline</li>
+              <li>Lazy install — model downloads only when you opt in</li>
+            </ul>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section>
-        <h2>Pick the right Whisper model</h2>
-        <p class="sub">Models download lazily on first use and cache to your home directory. Pick the smallest that gives you the accuracy you need.</p>
+    <!-- ─── Voice Clone deep-dive ─── -->
+    <section class="s" id="voice-clone">
+      <div class="wrap">
+        <div class="s-head">
+          <h2>Voice Clone, in three steps.</h2>
+          <p>
+            CosyVoice 3 0.5B does zero-shot voice cloning from a short reference
+            clip. Vuesub handles the runtime install, the audio normalisation, and
+            the Whisper-based reference transcription — you just upload, type, and
+            generate.
+          </p>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">01 — UPLOAD</div>
+            <h3>Drop in a clean clip</h3>
+            <p>5–30 seconds, single speaker, WAV or MP3. Vuesub normalises it to 16 kHz mono PCM and stores it under <code>~/.vuesub/speakers/</code>. Whisper auto-transcribes — no need to type out what was said.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">02 — VERIFY</div>
+            <h3>Edit the transcript if needed</h3>
+            <p>The auto-transcript is shown inline. CosyVoice's output quality depends on alignment between transcript and audio — if Whisper got it wrong (especially on accented or musical clips), one click fixes it.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">03 — GENERATE</div>
+            <h3>Type and hit Generate</h3>
+            <p>Cold start ~60 s on Mac CPU; subsequent generates with the same speaker are warm at ~3.5× realtime. The "Just generated" card auto-plays the result, with one-click Save&nbsp;As.</p>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top: 36px;">
+          <b>One-time setup.</b> The CosyVoice runtime is too heavy to bundle (~6.5 GB),
+          so it installs on demand the first time you download a model. You'll need
+          three tools on your PATH first — Vuesub detects what's missing and shows
+          install snippets inline.
+        </div>
+
+        <div class="prereqs" style="margin-top: 18px;">
+          <div class="prereq">
+            <h4>python</h4>
+            <p class="why">3.10–3.12 · CosyVoice's torch pin</p>
+            <pre>brew install python@3.12</pre>
+          </div>
+          <div class="prereq">
+            <h4>uv</h4>
+            <p class="why">venv + dep installer · 10× faster than pip</p>
+            <pre>curl -LsSf https://astral.sh/uv/install.sh | sh</pre>
+          </div>
+          <div class="prereq">
+            <h4>git</h4>
+            <p class="why">shallow-clones the CosyVoice repo</p>
+            <pre>xcode-select --install</pre>
+          </div>
+        </div>
+
+        <div class="callout warn" style="margin-top: 24px;">
+          <b>Heads up — Voice Clone is fully tested only on Apple Silicon Mac.</b>
+          Windows and Linux binaries are produced from CI but the runtime path
+          hasn't been live-tested on those platforms. Please
+          <a href="https://github.com/opcify/Vuesub-Pro/issues">open an issue</a>
+          if anything breaks.
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Caption deep-dive ─── -->
+    <section class="s" id="caption">
+      <div class="wrap">
+        <div class="s-head">
+          <h2>Caption that doesn't waste your time.</h2>
+          <p>
+            Caption mode is a Final-Cut-style editor on top of Whisper. The
+            waveform timeline pans and zooms, every caption clip is draggable, and
+            transcript edits round-trip back to the timeline.
+          </p>
+        </div>
+        <div class="pillars">
+          <div class="pillar">
+            <h3>Editor</h3>
+            <ul>
+              <li>Waveform timeline with per-pixel detail at any zoom (⌘+ / ⌘− / ⌘0)</li>
+              <li>Draggable caption clips — body to move, edges to resize</li>
+              <li>Inline text edits with auto-grow textareas, ⌘Z undo</li>
+              <li>Insert / delete / merge — empty gaps show a + button, ⌘J merges adjacent rows</li>
+              <li>Variable playback (1× / 1.25× / 1.5× / 2×) without changing pitch</li>
+            </ul>
+          </div>
+          <div class="pillar">
+            <h3>Languages &amp; encodings</h3>
+            <ul>
+              <li>Auto-detect, or pin one of 16 languages</li>
+              <li>Near-instant 简/繁 conversion for Chinese transcripts (OpenCC)</li>
+              <li>Plays anything: WebM with Opus + AV1, MKV, FLAC, .ogg via Web Audio fallback</li>
+              <li>Local mode never leaves your machine — useful for NDA'd content</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Models table ─── -->
+    <section class="s" id="models">
+      <div class="wrap">
+        <div class="s-head">
+          <h2>Pick the right Whisper model.</h2>
+          <p>
+            Models download lazily on first use and cache to your home directory.
+            Pick the smallest that gives you the accuracy you need.
+          </p>
+        </div>
         <table class="models-table">
           <thead>
             <tr>
@@ -315,159 +744,143 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>tiny</td><td>~75 MB</td><td>~1 GB</td><td>Very fast — quick drafts, low-power machines</td></tr>
-            <tr><td>base</td><td>~145 MB</td><td>~1 GB</td><td>Default. Reasonable accuracy on most laptops</td></tr>
-            <tr><td>small</td><td>~485 MB</td><td>~2 GB</td><td>Better accuracy, still CPU-friendly</td></tr>
-            <tr><td>medium</td><td>~1.5 GB</td><td>~5 GB</td><td>Strong accuracy. CPU-only is sluggish</td></tr>
-            <tr><td>large-v3</td><td>~3.1 GB</td><td>~10 GB</td><td>Best quality. GPU strongly recommended</td></tr>
-            <tr><td>openai/whisper-1</td><td>—</td><td>—</td><td>Cloud — uploads compressed audio to OpenAI</td></tr>
+            <tr><td>tiny</td><td>~75 MB</td><td>~1 GB</td><td class="note">Very fast — quick drafts, low-power machines</td></tr>
+            <tr><td>base</td><td>~145 MB</td><td>~1 GB</td><td class="note">Default. Reasonable accuracy on most laptops</td></tr>
+            <tr><td>small</td><td>~485 MB</td><td>~2 GB</td><td class="note">Better accuracy, still CPU-friendly</td></tr>
+            <tr><td>medium</td><td>~1.5 GB</td><td>~5 GB</td><td class="note">Strong accuracy. CPU-only is sluggish</td></tr>
+            <tr><td>large-v3</td><td>~3.1 GB</td><td>~10 GB</td><td class="note">Best quality. GPU strongly recommended</td></tr>
+            <tr><td>openai/whisper-1</td><td>—</td><td>—</td><td class="note">Cloud — uploads compressed audio to OpenAI</td></tr>
           </tbody>
         </table>
-        <div class="req" style="margin-top: 20px;">
+        <div class="callout">
           <b>Model download failing?</b>
-          <p style="margin: 6px 0 0; color: var(--text-2); font-size: 14px;">
-            Only if the in-app downloader fails (network, firewall, Hugging Face
-            unreachable), grab a pre-packaged model from the mirror below and
-            import it via <em>Settings → Models → Import</em>:
-          </p>
-          <p style="margin: 10px 0 0;">
-            <a href="https://drive.google.com/drive/folders/1fBrrqx_LGI4zGyShDLUyFfIsozjT8esc?usp=sharing" style="color: var(--accent-2); text-decoration: none; border-bottom: 1px solid var(--border);">
-              Whisper models · Google Drive mirror →
-            </a>
+          Only if the in-app downloader can't reach Hugging Face (network,
+          firewall, region block), grab a pre-packaged model from our mirror
+          and import it via <em>Settings → Models → Import</em>:
+          <a href="https://drive.google.com/drive/folders/1fBrrqx_LGI4zGyShDLUyFfIsozjT8esc?usp=sharing">Whisper models · Google Drive mirror →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Export formats ─── -->
+    <section class="s" id="export">
+      <div class="wrap">
+        <div class="s-head">
+          <h2>Export anywhere.</h2>
+          <p>
+            Vuesub writes four formats. Two of them — SRT and FCPXML — cover almost every
+            workflow.
           </p>
         </div>
-      </section>
-
-      <section>
-        <h2>Voice Clone <span class="badge" style="background: rgba(74, 144, 255, 0.18); color: var(--accent-2); padding: 4px 10px; border-radius: 999px; font-size: 12px; vertical-align: 4px;">new</span></h2>
-        <p class="sub">Zero-shot voice cloning with <a href="https://github.com/FunAudioLLM/CosyVoice" style="color: var(--accent-2); text-decoration: none; border-bottom: 1px solid var(--border);">CosyVoice 3 0.5B</a> — upload a clean clip, get back any text in that voice. Switch tabs via the left rail.</p>
-        <div class="formats">
-          <div class="format">
-            <h3>How it works</h3>
-            <ul>
-              <li><b>Upload</b> a 5–30 s WAV / MP3 of a single speaker (≤10 MB). Whisper auto-transcribes the clip — no need to type out what it says.</li>
-              <li><b>Edit if needed.</b> The transcript shows up next to the speaker — fix it if Whisper got it wrong (especially for poetic or accented audio). Accuracy here directly affects synthesis quality.</li>
-              <li><b>Type and Generate.</b> Cold start ≈ 60 s on Mac CPU; subsequent generates with the same speaker are warm at ~3.5× realtime. Output WAVs play in-app and can be saved anywhere.</li>
-              <li><b>Local-only.</b> No cloud option — your reference clips and generated audio never leave the machine.</li>
-            </ul>
-          </div>
-          <div class="format">
-            <h3>One-time setup</h3>
-            <p>The CosyVoice runtime is too heavy to bundle (~6.5 GB). On first model download, Vuesub installs it into <code>~/.vuesub/runtimes/cosyvoice/</code>. You need three tools on PATH first:</p>
-            <ul>
-              <li><b>Python 3.10–3.12</b> · <code>brew install python@3.12</code> on macOS</li>
-              <li><b>uv</b> · <code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></li>
-              <li><b>git</b> · <code>xcode-select --install</code> on macOS</li>
-            </ul>
-            <p>The Voice Clone page detects what's missing and shows install snippets inline.</p>
-          </div>
-          <div class="format">
-            <h3>System requirements</h3>
-            <ul>
-              <li><b>Disk</b> · ≈ 6.5 GB for runtime + model (one-time, lazy install)</li>
-              <li><b>RAM</b> · 8 GB OK, <b>16 GB+ recommended</b> — the loaded model pins ~6 GB</li>
-              <li><b>CPU</b> · works on any Apple Silicon / x64 CPU. GPU acceleration not enabled in v1; synthesis is CPU-bound</li>
-              <li><b>Languages</b> · 9 supported (Chinese, English, Japanese, Korean, German, Spanish, French, Italian, Russian) plus 18+ Chinese dialects</li>
-            </ul>
-          </div>
-          <div class="format">
-            <h3>Heads up — only macOS is tested</h3>
-            <p>v1 is fully exercised on Apple Silicon Mac. Windows x64 and Linux x64 binaries are produced from CI but the Voice Clone runtime path hasn't been live-tested on those platforms. Please <a href="https://github.com/opcify/Vuesub-Pro/issues" style="color: var(--accent-2); text-decoration: none; border-bottom: 1px solid var(--border);">open an issue</a> if anything breaks.</p>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>Export formats</h2>
-        <p class="sub">Vuesub writes four formats. Two of them — SRT and FCPXML — cover almost every workflow. Pick the one that matches what you'll do next.</p>
         <div class="formats">
           <div class="format">
             <div class="ext">.srt</div>
             <h3>SRT<span class="pick">Pick this if unsure</span></h3>
             <p>SubRip — the universal timed-subtitle format. Plain text, numbered cues, <code>HH:MM:SS,mmm</code> ranges. Practically every player and editor accepts it.</p>
             <ul>
-              <li><b>Players:</b> VLC, IINA, mpv, QuickTime, smart TVs. Drop <code>MyVideo.srt</code> next to <code>MyVideo.mp4</code> and most players load it automatically.</li>
-              <li><b>Upload:</b> YouTube, Vimeo accept SRT directly as a caption track and run auto-translation on top.</li>
-              <li><b>Editors:</b> Premiere Pro, DaVinci Resolve, Final Cut Pro, CapCut, Camtasia — import as a subtitle track with timing intact.</li>
-              <li><b>Burn-in:</b> <code>ffmpeg -vf subtitles=in.srt</code> to bake captions into the video.</li>
+              <li><b>Players:</b> VLC, IINA, mpv, QuickTime, smart TVs.</li>
+              <li><b>Upload:</b> YouTube, Vimeo accept SRT directly.</li>
+              <li><b>Editors:</b> Premiere Pro, DaVinci Resolve, Final Cut Pro, CapCut, Camtasia.</li>
+              <li><b>Burn-in:</b> <code>ffmpeg -vf subtitles=in.srt</code>.</li>
             </ul>
           </div>
-
           <div class="format">
             <div class="ext">.fcpxml</div>
             <h3>FCPXML<span class="pick">For Final Cut Pro</span></h3>
             <p>A real Final Cut Pro project (FCPXML 1.11) where every segment is a native, restyleable <code>&lt;caption&gt;</code> on lane 1 — not burnt-in titles.</p>
             <ul>
-              <li><b>Frame-aligned:</b> offsets and durations snap to the rate you choose, so FCP doesn't show <em>"not on an edit frame boundary"</em> warnings.</li>
-              <li><b>Match your project:</b> pick the same resolution &amp; FPS as your edit. Common picks: <em>iPhone / cameras</em> → 1080p · 30, <em>cinema (24p)</em> → 1080p · 23.976, <em>NTSC broadcast</em> → 1080p · 29.97, <em>PAL</em> → 1080p · 25, <em>4K</em> → 2160p · 30 or 24.</li>
-              <li><b>Import:</b> in FCP, <em>File → Import → XML…</em> — pick the .fcpxml. Captions appear on the timeline; copy them onto your edit.</li>
-              <li>Drop-frame timecode (DF) is used for 29.97 and 59.94, NDF for everything else.</li>
+              <li><b>Frame-aligned</b> to your chosen rate — no "not on edit frame boundary" warnings.</li>
+              <li><b>Match your project:</b> 1080p · 30 / 24 / 25 / 29.97 / 60.</li>
+              <li><b>Import:</b> File → Import → XML… → pick the .fcpxml.</li>
+              <li>Drop-frame timecode for 29.97 and 59.94, NDF for everything else.</li>
             </ul>
           </div>
-
           <div class="format">
             <div class="ext">.vtt</div>
             <h3>VTT</h3>
-            <p>WebVTT — the format browsers expect when you attach captions to an HTML5 <code>&lt;video&gt;</code> with a <code>&lt;track&gt;</code> element. Same shape as SRT, with <code>.</code> instead of <code>,</code> in timestamps and a <code>WEBVTT</code> header.</p>
-            <p>Pick this if you're publishing the video on a website you control and want captions to show without a third-party player.</p>
+            <p>WebVTT for HTML5 <code>&lt;video&gt;</code> with a <code>&lt;track&gt;</code> element. Same shape as SRT, with <code>.</code> instead of <code>,</code> and a <code>WEBVTT</code> header.</p>
+            <p>Pick this for self-hosted video on a website you control.</p>
           </div>
-
           <div class="format">
             <div class="ext">.txt</div>
             <h3>Plain text</h3>
             <p>Just the lines, one per segment. No timing.</p>
-            <p>Use it for the <em>content</em>, not the timing — turning a podcast into a blog post, dropping a transcript into Notion or Google Docs, feeding text to search or an LLM, sharing notes with someone who doesn't need the video.</p>
+            <p>Use it for the <em>content</em>, not the timing — turning a podcast into a blog post, dropping a transcript into Notion, feeding text to an LLM, sharing notes.</p>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section>
-        <h2>First launch on macOS</h2>
-        <p class="sub">
-          The app isn't yet signed with an Apple Developer ID, so macOS
-          will refuse to open it with <em>"Vuesub is damaged and can't be
-          opened"</em> the first time. Drag <code>Vuesub.app</code> from the
-          DMG into <code>/Applications</code>, then strip the quarantine
-          attribute:
-        </p>
-        <div class="req">
-          <pre style="margin: 0; font-family: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace; font-size: 13px; color: var(--text); overflow-x: auto;">sudo xattr -rd com.apple.quarantine /Applications/Vuesub.app</pre>
+    <!-- ─── First launch + system requirements ─── -->
+    <section class="s" id="requirements">
+      <div class="wrap">
+        <div class="s-head">
+          <h2>First launch &amp; system requirements.</h2>
+          <p>One-time steps for each platform, plus what your hardware needs to handle.</p>
         </div>
-        <p class="sub" style="margin-top: 12px; margin-bottom: 0;">
-          After that, double-click to launch normally. Same effect a
-          Developer-ID signature would have, just done by hand.
-        </p>
-      </section>
+        <div class="pillars">
+          <div class="pillar">
+            <h3>First launch on macOS</h3>
+            <p>The app isn't yet signed with an Apple Developer ID, so macOS will refuse to open it with <em>"Vuesub is damaged and can't be opened"</em>. Drag <code>Vuesub.app</code> from the DMG into <code>/Applications</code>, then strip the quarantine attribute:</p>
+            <pre class="code">sudo xattr -rd com.apple.quarantine /Applications/Vuesub.app</pre>
+            <p style="margin-top: 12px; font-size: 13px; color: var(--text-3);">Same effect a Developer-ID signature would have, just done by hand.</p>
+          </div>
+          <div class="pillar">
+            <h3>System requirements</h3>
+            <ul>
+              <li><b>macOS 11 Big Sur</b> or later · Apple Silicon (Intel via Rosetta supported but slower)</li>
+              <li><b>Windows 10 / 11</b> · x64 · WebView2 (preinstalled on Win 11)</li>
+              <li><b>Linux</b> · x64 · Debian / Ubuntu · needs <code>libwebkit2gtk-4.1-0</code></li>
+              <li><b>Disk</b> · ~1 GB for the app + Whisper models you download (~75 MB → 3 GB)</li>
+              <li><b>Voice Clone</b> · adds ~6.5 GB on first model download</li>
+              <li><b>RAM</b> · 8 GB OK for Caption · 16 GB+ recommended for Voice Clone</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <section>
-        <h2>System requirements</h2>
-        <div class="req">
+    <!-- ─── Footer ─── -->
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo">
+            <span class="nav-mark">V</span>
+            <span>Vuesub</span>
+          </div>
+          <p>Local-first audio &amp; video tooling for macOS, Windows, and Linux. Powered by Whisper and CosyVoice.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Product</h5>
           <ul>
-            <li><b>macOS 11 Big Sur</b> or later · Apple Silicon (Intel via Rosetta supported but slower).</li>
-            <li><b>Windows 10/11</b> · x64. Includes WebView2 (preinstalled on Windows 11).</li>
-            <li><b>Linux</b> · x64. Debian/Ubuntu via the .deb. Needs <code>webkit2gtk-4.1</code> at runtime (apt: <code>libwebkit2gtk-4.1-0</code>).</li>
-            <li>Roughly <b>1 GB free disk</b> for the app, plus the size of whichever Whisper model you download (tiny → 3 GB).</li>
+            <li><a href="#voice-clone">Voice Clone</a></li>
+            <li><a href="#caption">Caption</a></li>
+            <li><a href="#models">Models</a></li>
+            <li><a href="#export">Export formats</a></li>
           </ul>
         </div>
-      </section>
-
-      <section>
-        <div class="req" style="border-color: rgba(255, 200, 80, 0.25); background: rgba(255, 200, 80, 0.06);">
-          <b>Heads up — Windows &amp; Linux builds are untested.</b>
-          <p style="margin: 6px 0 0; color: var(--text-2); font-size: 14px;">
-            We've shipped Windows x64 and Linux x64 binaries, but they haven't
-            been put through real-world testing yet. If you hit anything broken,
-            please <a href="https://github.com/opcify/Vuesub-Pro/issues" style="color: var(--text-2); border-bottom: 1px solid var(--border);">open an issue</a>
-            so we can fix it.
-          </p>
+        <div class="footer-col">
+          <h5>Releases</h5>
+          <ul>
+            <li><a href="https://github.com/opcify/Vuesub-Pro/releases/latest">Latest</a></li>
+            <li><a href="https://github.com/opcify/Vuesub-Pro/releases">All releases</a></li>
+            <li><a href="https://github.com/opcify/Vuesub-Pro/issues">Report an issue</a></li>
+          </ul>
         </div>
-      </section>
-
-      <footer>
-        © Vuesub ·
-        <a href="https://github.com/opcify/Vuesub-Pro/releases">Releases</a> ·
-        <a href="https://github.com/opcify/Vuesub-Pro/issues">Report an issue</a>
-      </footer>
-    </div>
+        <div class="footer-col">
+          <h5>Powered by</h5>
+          <ul>
+            <li><a href="https://github.com/openai/whisper">OpenAI Whisper</a></li>
+            <li><a href="https://github.com/SYSTRAN/faster-whisper">faster-whisper</a></li>
+            <li><a href="https://github.com/FunAudioLLM/CosyVoice">CosyVoice</a></li>
+            <li><a href="https://tauri.app/">Tauri</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© Vuesub</span>
+        <span>v0.2.0</span>
+      </div>
+    </footer>
   </body>
 </html>
