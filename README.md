@@ -5,9 +5,27 @@
 Vuesub turns audio and video files into accurate, timestamped subtitles using
 [OpenAI Whisper](https://github.com/openai/whisper) running entirely on your
 machine — or, optionally, via the OpenAI cloud API for the convenience of
-not downloading the model. New in 0.2.0: a **Voice Clone** tab that runs
-zero-shot voice synthesis with [CosyVoice 3](https://github.com/FunAudioLLM/CosyVoice)
+not downloading the model. The **Voice Clone** tab runs zero-shot voice
+synthesis with [CosyVoice 3](https://github.com/FunAudioLLM/CosyVoice)
 locally — upload a clean clip, type any text, hear it in the same voice.
+
+**New in 0.4.0:** **Cancel** running Transcribe and Voice Clone jobs from
+the same button (hover swaps the icon + label, click cancels) — UI unblocks
+instantly; **Font size** in Settings → General scales the whole interface
+(Small / Medium / Large / Extra large); the Voice Clone **History** panel
+folds to one row of context to free space for the input; **playback button
+on each speaker's reference clip** so you can hear what CosyVoice is
+aligning to without leaving the page; the Generate input box now grows to
+fill the panel; Toolbar Model / Lang / Format dropdowns are now custom
+flyouts that open *below* the chip (instead of macOS's overlay pop-up
+button) with full keyboard nav.
+
+**Earlier (0.3.0):** in-row **split** at the cursor and **merge with the
+row above** for fast caption editing; Voice Clone gains a **speed slider**
+and an optional **style / instruct** prompt; **per-job Vocabulary** in the
+Caption page plus a global **Vocabulary** in Settings to bias Whisper
+toward proper nouns; Whisper transcribes with **word-level timestamps**
+and tighter hallucination/repetition guards.
 
 > **Downloads**
 > - macOS · Apple Silicon: [Vuesub-mac-aarch64.dmg](https://github.com/opcify/Vuesub-Pro/releases/latest/download/Vuesub-mac-aarch64.dmg)
@@ -33,9 +51,14 @@ and Vuesub produces a fully-edited subtitle track. From there:
 - **Drag the timing** — every caption clip on the waveform is draggable; drag
   the body to move the whole clip, drag either edge to resize. Adjacent clips
   can't overlap.
-- **Insert / delete / merge** — empty gaps over 100 ms get a `+` button to
-  drop a new caption in. Hover any row to reveal a `×` delete. Shift-click
-  adjacent rows then `⌘J` (`Ctrl+J` on Win/Linux) to merge into one.
+- **Insert / split / merge / delete** — every row that has gap above
+  enough room for a new caption gets an in-row **+** button that inserts a
+  new segment filling the entire available gap. Click into a row's text
+  and a ✂ button appears next to the delete `×` to split the segment at
+  the caret — timestamps allocated proportionally to the cursor position.
+  Hover any row (or click into its text) to reveal an upward-arrow button
+  on the left that merges it with the row above. Shift-click adjacent rows
+  then `⌘J` (`Ctrl+J` on Win/Linux) to merge a longer range into one.
 - **Follow the audio** — the playhead pins the currently-playing segment to
   the third visible row of the transcript so you always have context above
   and lookahead below.
