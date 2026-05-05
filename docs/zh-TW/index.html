@@ -1,17 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant-TW">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vuesub — audio to subtitles & voice cloning, on your machine</title>
-    <meta name="description" content="Turn audio and video into accurate subtitles, and clone any voice from a short sample. Runs entirely on your machine — Whisper for captions, CosyVoice 3 for voice cloning. macOS, Windows, Linux." />
+    <title>Vuesub — 字幕生成與聲音克隆，全在本地完成</title>
+    <meta name="description" content="將音訊與影片轉換為精準字幕，從一段短音訊中克隆任何聲音。完全在本地執行 — 字幕用 Whisper，聲音克隆用 CosyVoice 3。支援 macOS、Windows、Linux。" />
     <meta property="og:title" content="Vuesub" />
-    <meta property="og:description" content="Audio to subtitles + zero-shot voice cloning. Offline by default. Whisper · CosyVoice 3." />
+    <meta property="og:description" content="音訊轉字幕 + 零樣本聲音克隆。預設離線。Whisper · CosyVoice 3。" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="icon.png" />
-    <link rel="icon" href="favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta property="og:image" content="../icon.png" />
+    <link rel="icon" href="../favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../icon-32.png" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
     <link rel="alternate" hreflang="en" href="https://vuesub.com/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://vuesub.com/zh-CN/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://vuesub.com/zh-TW/" />
@@ -1417,11 +1417,6 @@
     </style>
   </head>
   <body>
-    <div class="lang-banner" id="lang-banner" hidden>
-      <span class="lang-banner-msg">检测到你使用中文 — 是否查看简体中文版本？</span>
-      <a class="lang-banner-cta" href="/zh-CN/">查看简体中文</a>
-      <button type="button" class="lang-banner-dismiss">不用，谢谢</button>
-    </div>
     <div class="ambient" aria-hidden="true">
       <div class="blob b1"></div>
       <div class="blob b2"></div>
@@ -1431,23 +1426,23 @@
     <nav class="nav">
       <div class="nav-inner">
         <a class="nav-logo" href="#top">
-          <img class="nav-mark" src="icon.png" alt="" width="26" height="26" />
+          <img class="nav-mark" src="../icon.png" alt="" width="26" height="26" />
           <span>Vuesub</span>
         </a>
         <div class="nav-links">
-          <a href="#caption">Caption</a>
-          <a href="#voice-clone">Voice Clone</a>
-          <a href="#models">Models</a>
-          <a href="#export">Export</a>
-          <a href="#requirements">Requirements</a>
+          <a href="#caption">字幕</a>
+          <a href="#voice-clone">聲音克隆</a>
+          <a href="#models">模型</a>
+          <a href="#export">匯出</a>
+          <a href="#requirements">系統需求</a>
         </div>
         <div class="lang-switch" aria-label="Language">
-          <a href="/" class="lang-item active" data-lang="en" hreflang="en">EN</a>
+          <a href="/" class="lang-item" data-lang="en" hreflang="en">EN</a>
           <a href="/zh-CN/" class="lang-item" data-lang="zh-CN" hreflang="zh-Hans">简</a>
-          <a href="/zh-TW/" class="lang-item" data-lang="zh-TW" hreflang="zh-Hant">繁</a>
+          <a href="/zh-TW/" class="lang-item active" data-lang="zh-TW" hreflang="zh-Hant">繁</a>
         </div>
         <a class="nav-cta" href="https://github.com/opcify/Vuesub-Pro/releases/latest">
-          Download
+          下載
         </a>
       </div>
     </nav>
@@ -1455,17 +1450,17 @@
     <a id="top"></a>
 
     <header class="wrap hero">
-      <span class="hero-eyebrow"><span class="dot"></span>v0.4.2 · Voice Clone now playable</span>
+      <span class="hero-eyebrow"><span class="dot"></span>v0.4.2 · 聲音克隆已可播放</span>
       <h1>
-        <span class="grad">Subtitles &amp; voice cloning,</span><br />
-        <span class="grad">on your machine.</span>
+        <span class="grad">字幕生成與聲音克隆，</span><br />
+        <span class="grad">全在本地完成。</span>
       </h1>
       <div class="downloads">
         <a class="btn" href="https://github.com/opcify/Vuesub-Pro/releases/latest/download/Vuesub-mac-aarch64.dmg">
           <svg class="os-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.32-.04-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.197-2.99.792-.91 2.142-1.58 3.144-1.62.018.13.018.27.018.4zm5.014 17.93c-.5 1.16-.738 1.68-1.382 2.71-.898 1.45-2.166 3.25-3.738 3.27-1.397.02-1.756-.91-3.654-.9-1.898.01-2.293.92-3.692.91-1.572-.02-2.774-1.65-3.672-3.1-2.514-4.06-2.778-8.83-1.227-11.36 1.103-1.79 2.844-2.84 4.48-2.84 1.667 0 2.715.91 4.094.91 1.337 0 2.152-.91 4.077-.91 1.456 0 2.998.79 4.097 2.16-3.6 1.97-3.014 7.11.617 9.15z"/>
           </svg>
-          Download for Mac
+          下載 Mac 版
           <span class="arch">Apple Silicon</span>
         </a>
         <a class="btn secondary" href="https://github.com/opcify/Vuesub-Pro/releases/latest/download/Vuesub-windows-x64-setup.exe">
@@ -1482,11 +1477,11 @@
         </a>
       </div>
       <div class="meta">
-        <a href="https://github.com/opcify/Vuesub-Pro/releases">All releases &amp; release notes</a>
+        <a href="https://github.com/opcify/Vuesub-Pro/releases">查看所有版本與更新說明</a>
       </div>
       <div class="trust">
-        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> No account, no telemetry</span>
-        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Offline by default</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 無需帳戶，零追蹤</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 預設離線執行</span>
         <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> macOS · Windows · Linux</span>
       </div>
 
@@ -1499,9 +1494,9 @@
           </div>
           <div class="wave-row" aria-hidden="true" id="hero-wave"></div>
           <div class="caption-track">
-            <div class="caption-clip">"and that's when the model figured it out"</div>
-            <div class="caption-clip">"we shipped on a friday"</div>
-            <div class="caption-clip">"no regrets"</div>
+            <div class="caption-clip">"就在那一刻，模型搞清楚了"</div>
+            <div class="caption-clip">"我們週五就上線了"</div>
+            <div class="caption-clip">"毫無遺憾"</div>
           </div>
         </div>
       </div>
@@ -1516,19 +1511,19 @@
         <div class="metrics reveal">
           <div class="metric">
             <div class="num">3.5×</div>
-            <div class="label">realtime voice synthesis<br />after warmup</div>
+            <div class="label">預熱後的<br />即時合成速度</div>
           </div>
           <div class="metric">
             <div class="num">16</div>
-            <div class="label">languages auto-detected<br />for transcription</div>
+            <div class="label">種語言<br />自動辨識</div>
           </div>
           <div class="metric">
             <div class="num">5–30s</div>
-            <div class="label">reference clip is all<br />Voice Clone needs</div>
+            <div class="label">聲音克隆所需的<br />參考片段</div>
           </div>
           <div class="metric">
             <div class="num">0</div>
-            <div class="label">accounts, telemetry,<br />or uploads required</div>
+            <div class="label">帳戶、追蹤<br />或上傳要求</div>
           </div>
         </div>
       </div>
@@ -1538,9 +1533,9 @@
     <section class="s">
       <div class="wrap">
         <div class="s-head reveal">
-          <span class="kicker">Two tools, one app</span>
-          <h2><span class="grad">Caption or clone.</span></h2>
-          <p>Switch with a click on the left rail.</p>
+          <span class="kicker">兩套工具，一款應用</span>
+          <h2><span class="grad">字幕，或克隆。</span></h2>
+          <p>左側導覽一鍵切換。</p>
         </div>
         <div class="bento reveal">
           <div class="pillar" id="caption-pillar">
@@ -1551,8 +1546,8 @@
                 <path d="M8 13h8M8 17h6"/>
               </svg>
             </div>
-            <h3>Caption</h3>
-            <p class="lede">Drop in audio, get a fully-edited subtitle track.</p>
+            <h3>字幕</h3>
+            <p class="lede">拖入音訊，獲得可編輯的完整字幕軌道。</p>
             <div class="mock" aria-hidden="true">
               <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-3);">
                 <span>00:00</span><span>02:34</span>
@@ -1562,7 +1557,7 @@
                 <i></i><i></i><i></i><i></i><i></i>
               </div>
               <div style="margin-top: 10px; color: var(--text-2);">
-                Editable transcript &middot; SRT / VTT / FCPXML / TXT
+                可編輯逐字稿 &middot; SRT / VTT / FCPXML / TXT
               </div>
             </div>
           </div>
@@ -1577,16 +1572,16 @@
                 <line x1="20" y1="10" x2="20" y2="14"/>
               </svg>
             </div>
-            <h3>Voice Clone <span class="badge-new">new</span></h3>
-            <p class="lede">5–30s clip in. Any text, in that voice, out.</p>
+            <h3>聲音克隆 <span class="badge-new">全新</span></h3>
+            <p class="lede">輸入 5–30 秒片段，讓那個聲音讀出任何文字。</p>
             <div class="mock mock-vc" aria-hidden="true">
               <div class="box">
-                <div class="ttl">reference</div>
+                <div class="ttl">參考音訊</div>
                 <div class="mini-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
               </div>
               <div class="arrow">→</div>
               <div class="box">
-                <div class="ttl">cloned output</div>
+                <div class="ttl">克隆輸出</div>
                 <div class="mini-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
               </div>
             </div>
@@ -1594,10 +1589,10 @@
         </div>
 
         <details class="more reveal">
-          <summary>What's inside each mode →</summary>
+          <summary>了解每個模式的細節 →</summary>
           <div class="more-body">
-            <p><b>Caption.</b> Built for creators, podcasters, and anyone who needs accurate timed text. Editable transcript with draggable caption clips on a waveform; SRT, VTT, plain text, or FCPXML for Final Cut Pro; 16 languages auto-detected, including Mandarin and Cantonese; optional cloud route via OpenAI <code>whisper-1</code>.</p>
-            <p><b>Voice Clone.</b> Powered by CosyVoice 3 — runs locally, your reference clips never leave the machine. Zero-shot cloning, no fine-tuning. Nine languages: 中文 · English · 日本語 · 한국어 · Deutsch · Español · Français · Italiano · Русский. Whisper auto-transcribes the reference; transcript is editable inline. Lazy install — model downloads only when you opt in.</p>
+            <p><b>字幕。</b> 為創作者、Podcast 主持人和任何需要精準時間碼字幕的人而設計。帶波形圖的可編輯逐字稿，字幕片段可直接拖動；支援 SRT、VTT、純文字或 Final Cut Pro 的 FCPXML 格式；自動辨識 16 種語言，包括普通話與粵語；可選用 OpenAI <code>whisper-1</code> 走雲端路徑。</p>
+            <p><b>聲音克隆。</b> 由 CosyVoice 3 驅動 — 完全在本地執行，參考音訊不會離開你的電腦。零樣本克隆，無需微調。支援 9 種語言：中文 · English · 日本語 · 한국어 · Deutsch · Español · Français · Italiano · Русский。Whisper 自動為參考音訊產生逐字稿，可即位編輯。按需安裝 — 只在你啟用時才下載模型。</p>
           </div>
         </details>
       </div>
@@ -1607,15 +1602,15 @@
     <section class="s" id="caption">
       <div class="wrap">
         <div class="s-head reveal">
-          <span class="kicker">Caption</span>
-          <h2><span class="grad">A Final-Cut-style editor on top of Whisper.</span></h2>
-          <p>Drag clips. Zoom the waveform. Round-trip every edit.</p>
+          <span class="kicker">字幕</span>
+          <h2><span class="grad">基於 Whisper 的 Final Cut 風格字幕編輯器。</span></h2>
+          <p>拖動字幕。縮放波形。每一處修改即時同步。</p>
         </div>
 
         <div class="bento reveal">
           <div class="pillar">
-            <h3>Editor</h3>
-            <p class="lede">Per-pixel waveform. Draggable clips. Inline edits.</p>
+            <h3>編輯器</h3>
+            <p class="lede">逐像素波形。可拖動字幕。原位編輯。</p>
             <div class="mock" aria-hidden="true">
               <div style="display: flex; gap: 6px; align-items: end; height: 40px;">
                 <i style="flex:1; height:30%; background: var(--accent-2); border-radius: 1px;"></i>
@@ -1637,8 +1632,8 @@
             </div>
           </div>
           <div class="pillar">
-            <h3>Languages &amp; encodings</h3>
-            <p class="lede">16 languages, auto-detected. Plays anything FFmpeg can read.</p>
+            <h3>語言與編碼</h3>
+            <p class="lede">16 種語言自動辨識。FFmpeg 能讀的格式都能播放。</p>
             <div class="marquee" style="margin-top: 4px;">
               <div class="marquee-track">
                 <span class="lang-pill">中文</span>
@@ -1684,39 +1679,39 @@
           <div class="caption-anim-head">
             <div class="caption-anim-title">
               <span class="mac-dots"><i></i><i></i><i></i></span>
-              <span class="file">interview-segment-3.wav · transcript</span>
+              <span class="file">interview-segment-3.wav · 逐字稿</span>
             </div>
             <span class="ca-step-pill" id="ca-step" data-op="idle">
               <span class="icon">▸</span>
-              <span class="name">READY</span>
+              <span class="name">就緒</span>
             </span>
           </div>
           <div class="caption-anim" aria-hidden="true">
             <div class="ca-tbl-head">
               <span>#</span>
-              <span>Start</span>
+              <span>開始</span>
               <span></span>
-              <span>End</span>
-              <span>Caption text</span>
-              <span class="h-actions">Actions</span>
+              <span>結束</span>
+              <span>字幕內容</span>
+              <span class="h-actions">操作</span>
             </div>
             <div class="ca-rows" id="ca-rows"></div>
           </div>
-          <div class="ca-status" id="ca-status">Edits round-trip back to the timeline. <b>⌘Z</b> to undo.</div>
+          <div class="ca-status" id="ca-status">所有修改即時同步回時間軸。<b>⌘Z</b> 還原。</div>
         </div>
 
         <details class="more reveal">
-          <summary>Editor shortcuts &amp; details →</summary>
+          <summary>編輯器快捷鍵與細節 →</summary>
           <div class="more-body">
             <ul>
-              <li>Waveform timeline with per-pixel detail at any zoom (⌘+ / ⌘− / ⌘0)</li>
-              <li>Draggable caption clips — body to move, edges to resize</li>
-              <li>Inline text edits with auto-grow textareas, ⌘Z undo</li>
-              <li>Insert / split / merge / delete — per-row + button (auto-fills the gap), in-row ✂ to split at the caret, ↑ to merge with the row above, ⌘J to join a multi-row range</li>
-              <li>Variable playback (1× / 1.25× / 1.5× / 2×) without changing pitch</li>
-              <li>Near-instant 简/繁 conversion for Chinese transcripts (OpenCC)</li>
-              <li>Plays anything: WebM with Opus + AV1, MKV, FLAC, .ogg via Web Audio fallback</li>
-              <li>Local mode never leaves your machine — useful for NDA'd content</li>
+              <li>任意縮放等級下的逐像素波形時間軸（⌘+ / ⌘− / ⌘0）</li>
+              <li>字幕片段可拖動 — 主體拖動位置，邊緣調整時長</li>
+              <li>原位文字編輯，文字框自動展開，⌘Z 還原</li>
+              <li>插入 / 拆分 / 合併 / 刪除 — 每列的 + 按鈕（自動填充間隙），列內 ✂ 在游標處拆分，↑ 與上一列合併，⌘J 合併多列選取範圍</li>
+              <li>變速播放（1× / 1.25× / 1.5× / 2×）不改變音調</li>
+              <li>中文逐字稿支援即時簡/繁轉換（OpenCC）</li>
+              <li>格式通吃：WebM (Opus + AV1)、MKV、FLAC、.ogg（Web Audio 備援方案）</li>
+              <li>本地模式不向外傳送任何資料 — 適合 NDA 保密內容</li>
             </ul>
           </div>
         </details>
@@ -1727,38 +1722,38 @@
     <section class="s" id="voice-clone">
       <div class="wrap">
         <div class="s-head reveal">
-          <span class="kicker">Voice Clone</span>
-          <h2><span class="grad">Three steps to a cloned voice.</span></h2>
-          <p>Upload, verify, generate.</p>
+          <span class="kicker">聲音克隆</span>
+          <h2><span class="grad">三步克隆任何聲音。</span></h2>
+          <p>上傳，校對，生成。</p>
         </div>
         <div class="steps reveal">
           <div class="step">
-            <div class="step-num">01 — UPLOAD</div>
-            <h3>Drop in a clean clip</h3>
-            <p>5–30 seconds. WAV or MP3. Single speaker.</p>
+            <div class="step-num">01 — 上傳</div>
+            <h3>拖入一段乾淨的音訊</h3>
+            <p>5–30 秒。WAV 或 MP3。單一說話者。</p>
           </div>
           <div class="step">
-            <div class="step-num">02 — VERIFY</div>
-            <h3>Edit the auto-transcript</h3>
-            <p>Whisper transcribes. One click fixes anything wrong.</p>
+            <div class="step-num">02 — 校對</div>
+            <h3>編輯自動產生的逐字稿</h3>
+            <p>Whisper 自動轉錄。一鍵修正任何錯誤。</p>
           </div>
           <div class="step">
-            <div class="step-num">03 — GENERATE</div>
-            <h3>Type and hit play</h3>
-            <p>~60s cold start. ~3.5× realtime warm.</p>
+            <div class="step-num">03 — 生成</div>
+            <h3>輸入文字，按下播放</h3>
+            <p>冷啟動約 60 秒。預熱後約 3.5 倍即時速度。</p>
           </div>
         </div>
 
         <!-- Live demo: Steve Jobs reference clip → cloned output -->
         <div class="vc-demo reveal">
-          <div class="vc-demo-head">Live demo · Click to play</div>
+          <div class="vc-demo-head">線上試聽 · 點擊播放</div>
           <div class="vc-demo-row">
             <div class="vc-card">
               <div class="vc-card-head">
-                <span>Reference · 0:18</span>
-                <span class="vc-label">Steve Jobs (real)</span>
+                <span>參考音訊 · 0:18</span>
+                <span class="vc-label">Steve Jobs（原聲）</span>
               </div>
-              <div class="vc-player" data-src="audio/jobs_input.mp3">
+              <div class="vc-player" data-src="../audio/jobs_input.mp3">
                 <button class="vc-play" type="button" aria-label="Play reference clip"></button>
                 <div class="vc-wave" aria-hidden="true"></div>
                 <span class="vc-time">0:00 / 0:18</span>
@@ -1775,29 +1770,29 @@
 
             <div class="vc-card is-output">
               <div class="vc-card-head">
-                <span>Cloned · 0:13</span>
-                <span class="vc-label">Same voice, new text</span>
+                <span>克隆輸出 · 0:13</span>
+                <span class="vc-label">同一聲音，全新文字</span>
               </div>
-              <div class="vc-player" data-src="audio/jobs_clone.wav">
+              <div class="vc-player" data-src="../audio/jobs_clone.wav">
                 <button class="vc-play" type="button" aria-label="Play cloned output"></button>
                 <div class="vc-wave" aria-hidden="true"></div>
                 <span class="vc-time">0:00 / 0:13</span>
               </div>
             </div>
           </div>
-          <p class="vc-quote">Cloned entirely from the 18s reference — <b>no fine-tuning, no training data</b>, generated in seconds on a Mac.</p>
+          <p class="vc-quote">完全從這 18 秒的參考片段克隆而來 — <b>無需微調、無需訓練資料</b>，在 Mac 上幾秒鐘生成。</p>
         </div>
 
         <details class="more reveal">
-          <summary>One-time setup &amp; prerequisites →</summary>
+          <summary>一次性設定與前置需求 →</summary>
           <div class="more-body">
-            <p>The CosyVoice runtime is too heavy to bundle (~6.5 GB), so it installs on demand the first time you download a model. Vuesub detects what's missing and shows install snippets inline. You'll need three tools on your <code>PATH</code> first:</p>
+            <p>CosyVoice 執行階段體積較大（約 6.5 GB），無法直接打包，會在你首次下載模型時按需安裝。Vuesub 會自動偵測缺少的依賴並在介面上給出安裝指令。你需要先把以下三個工具加入 <code>PATH</code>：</p>
             <ul>
-              <li><b>python 3.10–3.12</b> — CosyVoice's torch pin. <code>brew install python@3.12</code></li>
-              <li><b>uv</b> — venv + dep installer, 10× faster than pip. <code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></li>
-              <li><b>git</b> — shallow-clones the CosyVoice repo. <code>xcode-select --install</code></li>
+              <li><b>python 3.10–3.12</b> — CosyVoice 的 torch 版本要求。 <code>brew install python@3.12</code></li>
+              <li><b>uv</b> — venv 與依賴管理器，比 pip 快 10 倍。 <code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></li>
+              <li><b>git</b> — 淺克隆 CosyVoice 倉庫。 <code>xcode-select --install</code></li>
             </ul>
-            <p style="margin-top: 14px;"><b>Heads up.</b> Voice Clone is fully tested only on Apple Silicon Mac. Windows and Linux binaries are produced from CI but the runtime path hasn't been live-tested on those platforms. Please <a href="https://github.com/opcify/Vuesub-Pro/issues" style="color: var(--accent-2); border-bottom: 1px solid var(--border);">open an issue</a> if anything breaks.</p>
+            <p style="margin-top: 14px;"><b>注意。</b> 聲音克隆目前僅在 Apple Silicon Mac 上完整測試。Windows 與 Linux 版本由 CI 建置，但執行階段路徑尚未在這兩個平台實測。如遇問題，歡迎 <a href="https://github.com/opcify/Vuesub-Pro/issues" style="color: var(--accent-2); border-bottom: 1px solid var(--border);">提交 issue</a> 回報。</p>
           </div>
         </details>
       </div>
@@ -1807,9 +1802,9 @@
     <section class="s" id="models">
       <div class="wrap">
         <div class="s-head reveal">
-          <span class="kicker">Whisper models</span>
-          <h2><span class="grad">Pick the smallest that's accurate enough.</span></h2>
-          <p>Download lazily on first use.</p>
+          <span class="kicker">Whisper 模型</span>
+          <h2><span class="grad">選擇能滿足精度需求的最小模型即可。</span></h2>
+          <p>首次使用時按需下載。</p>
         </div>
 
         <div class="models-list reveal">
@@ -1841,14 +1836,14 @@
           <div class="mrow" data-bar="0" style="opacity: 0.7;">
             <div class="name">whisper-1</div>
             <div class="bar"><i style="width: 0%;"></i></div>
-            <div class="note">cloud · OpenAI</div>
+            <div class="note">雲端 · OpenAI</div>
           </div>
         </div>
 
         <div class="callout reveal">
-          <b>Model download failing?</b>
-          Grab a pre-packaged model from our mirror and import via <em>Settings → Models → Import</em>:
-          <a href="https://drive.google.com/drive/folders/1fBrrqx_LGI4zGyShDLUyFfIsozjT8esc?usp=sharing">Google Drive mirror →</a>
+          <b>模型下載失敗？</b>
+          可以從鏡像下載預打包的模型，再透過 <em>設定 → 模型 → 匯入</em> 載入：
+          <a href="https://drive.google.com/drive/folders/1fBrrqx_LGI4zGyShDLUyFfIsozjT8esc?usp=sharing">Google Drive 鏡像 →</a>
         </div>
       </div>
     </section>
@@ -1857,39 +1852,39 @@
     <section class="s" id="export">
       <div class="wrap">
         <div class="s-head reveal">
-          <span class="kicker">Export</span>
-          <h2><span class="grad">Four formats. Every workflow.</span></h2>
+          <span class="kicker">匯出</span>
+          <h2><span class="grad">四種格式。覆蓋所有工作流程。</span></h2>
         </div>
         <div class="formats reveal">
           <div class="format">
             <div class="ext">.srt</div>
-            <h3>SRT <span class="pick">default</span></h3>
-            <p>Universal. Plays everywhere.</p>
+            <h3>SRT <span class="pick">預設</span></h3>
+            <p>通用格式。哪兒都能播。</p>
           </div>
           <div class="format">
             <div class="ext">.fcpxml</div>
             <h3>FCPXML</h3>
-            <p>Native Final Cut Pro captions. Frame-aligned.</p>
+            <p>Final Cut Pro 原生字幕。逐幀對齊。</p>
           </div>
           <div class="format">
             <div class="ext">.vtt</div>
             <h3>VTT</h3>
-            <p>HTML5 <code>&lt;track&gt;</code>. For self-hosted video.</p>
+            <p>HTML5 <code>&lt;track&gt;</code> 標籤。適合自架影片。</p>
           </div>
           <div class="format">
             <div class="ext">.txt</div>
-            <h3>Plain text</h3>
-            <p>Just the words. Feed an LLM, write a blog post.</p>
+            <h3>純文字</h3>
+            <p>只有文字內容。餵給 LLM，整理成部落格文章。</p>
           </div>
         </div>
 
         <details class="more reveal">
-          <summary>Format details &amp; player support →</summary>
+          <summary>格式細節與播放器支援 →</summary>
           <div class="more-body">
-            <p><b>SRT.</b> SubRip — the universal timed-subtitle format. Plain text, numbered cues, <code>HH:MM:SS,mmm</code> ranges. Players: VLC, IINA, mpv, QuickTime, smart TVs. Upload: YouTube, Vimeo accept SRT directly. Editors: Premiere Pro, DaVinci Resolve, Final Cut Pro, CapCut, Camtasia. Burn-in: <code>ffmpeg -vf subtitles=in.srt</code>.</p>
-            <p><b>FCPXML.</b> A real Final Cut Pro project (FCPXML 1.11) where every segment is a native, restyleable <code>&lt;caption&gt;</code> on lane 1 — not burnt-in titles. Frame-aligned to your chosen rate (1080p · 30 / 24 / 25 / 29.97 / 60). Drop-frame timecode for 29.97 and 59.94, NDF for everything else. Import: File → Import → XML… → pick the .fcpxml.</p>
-            <p><b>VTT.</b> WebVTT for HTML5 <code>&lt;video&gt;</code> with a <code>&lt;track&gt;</code> element. Same shape as SRT, with <code>.</code> instead of <code>,</code> and a <code>WEBVTT</code> header. Pick this for self-hosted video on a website you control.</p>
-            <p><b>Plain text.</b> Just the lines, one per segment. No timing. Use it for the <em>content</em>, not the timing — turning a podcast into a blog post, dropping a transcript into Notion, feeding text to an LLM, sharing notes.</p>
+            <p><b>SRT。</b> SubRip — 通用的時間碼字幕格式。純文字、編號字幕段、<code>HH:MM:SS,mmm</code> 時間格式。播放器：VLC、IINA、mpv、QuickTime、智慧電視。上傳：YouTube、Vimeo 直接接受 SRT。剪輯軟體：Premiere Pro、DaVinci Resolve、Final Cut Pro、CapCut、Camtasia。硬字幕燒錄：<code>ffmpeg -vf subtitles=in.srt</code>。</p>
+            <p><b>FCPXML。</b> 一份真正的 Final Cut Pro 專案（FCPXML 1.11），每段字幕都是 lane 1 上可重新設計樣式的原生 <code>&lt;caption&gt;</code> — 不是燒錄的字幕。逐幀精準對齊（1080p · 30 / 24 / 25 / 29.97 / 60）。29.97 與 59.94 使用 drop-frame 時間碼，其他幀率使用 NDF。匯入方式：File → Import → XML… → 選擇 .fcpxml。</p>
+            <p><b>VTT。</b> 配合 HTML5 <code>&lt;video&gt;</code> 與 <code>&lt;track&gt;</code> 標籤的 WebVTT 格式。結構與 SRT 類似，時間分隔符是 <code>.</code> 而非 <code>,</code>，檔案以 <code>WEBVTT</code> 標頭開始。適合你自己掌控的站台自架影片。</p>
+            <p><b>純文字。</b> 只有文字，每段一行，沒有時間碼。適合需要 <em>內容</em> 而非時間的場景 — 把 Podcast 整理成部落格、把逐字稿丟進 Notion、把文字餵給 LLM、分享筆記。</p>
           </div>
         </details>
       </div>
@@ -1899,25 +1894,25 @@
     <section class="s" id="requirements">
       <div class="wrap">
         <div class="s-head reveal">
-          <span class="kicker">Setup</span>
-          <h2><span class="grad">First launch &amp; system requirements.</span></h2>
+          <span class="kicker">設定</span>
+          <h2><span class="grad">首次啟動與系統需求。</span></h2>
         </div>
 
         <div class="reqs-grid reveal">
           <div class="req-card">
-            <h4>First launch on macOS</h4>
-            <p style="margin: 0 0 12px; color: var(--text-2); font-size: 14px;">Strip the quarantine attribute so Gatekeeper opens the app:</p>
+            <h4>在 macOS 上首次啟動</h4>
+            <p style="margin: 0 0 12px; color: var(--text-2); font-size: 14px;">去除 Gatekeeper 的隔離屬性以開啟應用：</p>
             <pre class="code">sudo xattr -rd com.apple.quarantine /Applications/Vuesub.app</pre>
-            <p style="margin: 12px 0 0; font-size: 12px; color: var(--text-3);">Same effect as a Developer-ID signature, by hand.</p>
+            <p style="margin: 12px 0 0; font-size: 12px; color: var(--text-3);">效果等同於 Developer-ID 簽章，只是手動操作。</p>
           </div>
           <div class="req-card">
-            <h4>System requirements</h4>
+            <h4>系統需求</h4>
             <ul>
-              <li><b>macOS 11+</b> · Apple Silicon native</li>
+              <li><b>macOS 11+</b> · Apple Silicon 原生</li>
               <li><b>Windows 10 / 11</b> · x64 · WebView2</li>
               <li><b>Linux</b> · x64 Debian/Ubuntu · libwebkit2gtk-4.1</li>
-              <li><b>Caption</b>: 8 GB RAM · <b>Voice Clone</b>: 16 GB+</li>
-              <li><b>Disk</b>: ~1 GB app + 75 MB–3 GB models · +6.5 GB Voice Clone</li>
+              <li><b>字幕</b>：8 GB 記憶體 · <b>聲音克隆</b>：16 GB+</li>
+              <li><b>硬碟</b>：應用約 1 GB + 模型 75 MB–3 GB · 聲音克隆另需 +6.5 GB</li>
             </ul>
           </div>
         </div>
@@ -1928,14 +1923,14 @@
     <section class="s">
       <div class="wrap reveal">
         <div class="cta-banner">
-          <h2>Ready to ship subtitles?</h2>
-          <p>Download once. No account. No upload. Runs offline.</p>
+          <h2>準備好開始製作字幕了嗎？</h2>
+          <p>下載一次即可。無需帳戶。無需上傳。完全離線執行。</p>
           <div class="downloads" style="margin-bottom: 0;">
             <a class="btn" href="https://github.com/opcify/Vuesub-Pro/releases/latest">
-              Download Vuesub
+              下載 Vuesub
             </a>
             <a class="btn secondary" href="https://github.com/opcify/Vuesub-Pro">
-              View on GitHub
+              在 GitHub 上查看
             </a>
           </div>
         </div>
@@ -1947,30 +1942,30 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="nav-logo">
-            <img class="nav-mark" src="icon.png" alt="" width="26" height="26" />
+            <img class="nav-mark" src="../icon.png" alt="" width="26" height="26" />
             <span>Vuesub</span>
           </div>
-          <p>Local-first audio &amp; video tooling for macOS, Windows, and Linux. Powered by Whisper and CosyVoice.</p>
+          <p>面向 macOS、Windows、Linux 的本地優先音影工具。基於 Whisper 與 CosyVoice。</p>
         </div>
         <div class="footer-col">
-          <h5>Product</h5>
+          <h5>產品</h5>
           <ul>
-            <li><a href="#caption">Caption</a></li>
-            <li><a href="#voice-clone">Voice Clone</a></li>
-            <li><a href="#models">Models</a></li>
-            <li><a href="#export">Export formats</a></li>
+            <li><a href="#caption">字幕</a></li>
+            <li><a href="#voice-clone">聲音克隆</a></li>
+            <li><a href="#models">模型</a></li>
+            <li><a href="#export">匯出格式</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h5>Releases</h5>
+          <h5>版本發佈</h5>
           <ul>
-            <li><a href="https://github.com/opcify/Vuesub-Pro/releases/latest">Latest</a></li>
-            <li><a href="https://github.com/opcify/Vuesub-Pro/releases">All releases</a></li>
-            <li><a href="https://github.com/opcify/Vuesub-Pro/issues">Report an issue</a></li>
+            <li><a href="https://github.com/opcify/Vuesub-Pro/releases/latest">最新版本</a></li>
+            <li><a href="https://github.com/opcify/Vuesub-Pro/releases">所有版本</a></li>
+            <li><a href="https://github.com/opcify/Vuesub-Pro/issues">回報問題</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h5>Powered by</h5>
+          <h5>技術堆疊</h5>
           <ul>
             <li><a href="https://github.com/openai/whisper">OpenAI Whisper</a></li>
             <li><a href="https://github.com/SYSTRAN/faster-whisper">faster-whisper</a></li>
@@ -2103,9 +2098,9 @@
         // Initial 3-row state. Each row has a stable id so DOM transitions can play.
         function initialState() {
           return [
-            { id: 1, s: '00:01.2', e: '00:03.5', txt: 'Hello and welcome' },
-            { id: 2, s: '00:03.5', e: '00:06.2', txt: 'Today we\'re talking Whisper' },
-            { id: 3, s: '00:06.2', e: '00:09.4', txt: 'an open-source speech model' },
+            { id: 1, s: '00:01.2', e: '00:03.5', txt: '大家好，歡迎收看' },
+            { id: 2, s: '00:03.5', e: '00:06.2', txt: '今天我們來聊聊 Whisper' },
+            { id: 3, s: '00:06.2', e: '00:09.4', txt: '一個開源的語音辨識模型' },
           ];
         }
         var nextId = 100;
@@ -2227,8 +2222,8 @@
 
         // ─── Operation transforms ────────────────────────────────────────
         function opSplit() {
-          setStep('split', 'SPLIT  ✂', '✂');
-          setStatus('Click <b>✂</b> to split <b>row 02</b> at the caret.');
+          setStep('split', '拆分  ✂', '✂');
+          setStatus('點擊 <b>✂</b> 在游標處拆分<b>第 02 列</b>。');
           // Phase A: highlight + show caret in row 2.
           state = state.map(function (r) {
             return Object.assign({}, r, r.id === 2 ? { active: true, hot: 'split', caretAt: 'mid' } : {});
@@ -2239,8 +2234,8 @@
             // Phase B: actually split row 2 into 2 + new.
             var origIdx = state.findIndex(function (r) { return r.id === 2; });
             var orig = state[origIdx];
-            var midTxt = 'Today we\'re';
-            var tailTxt = 'talking Whisper';
+            var midTxt = '今天我們';
+            var tailTxt = '來聊聊 Whisper';
             var splitTime = '00:04.7';
             var newRow = { id: ++nextId, s: splitTime, e: orig.e, txt: tailTxt };
             var updated = Object.assign({}, orig, {
@@ -2250,13 +2245,13 @@
             });
             state = state.slice(0, origIdx).concat([updated, newRow], state.slice(origIdx + 1));
             reconcile(state);
-            setStatus('<b>Split.</b> Time was reapportioned proportionally to caret position.');
+            setStatus('<b>已拆分。</b> 時間按游標位置等比分配。');
           }, 1100);
         }
 
         function opInsert() {
-          setStep('insert', 'INSERT  +', '+');
-          setStatus('Click <b>+</b> below <b>row 03</b> to insert into the gap.');
+          setStep('insert', '插入  +', '+');
+          setStatus('點擊 <b>+</b> 在<b>第 03 列</b>下方的間隙處插入新列。');
           var anchorIdx = 2; // insert after the 3rd row (index 2)
           state = state.map(function (r, i) {
             return Object.assign({}, r, i === anchorIdx ? { active: true, hot: 'insert' } : {});
@@ -2264,18 +2259,18 @@
           reconcile(state);
 
           setTimeout(function () {
-            var newRow = { id: ++nextId, s: '00:09.4', e: '00:10.6', txt: 'new caption…', empty: true };
+            var newRow = { id: ++nextId, s: '00:09.4', e: '00:10.6', txt: '新字幕…', empty: true };
             // Place after anchorIdx.
             state = state.map(function (r) { return Object.assign({}, r, { active: false, hot: null }); });
             state.splice(anchorIdx + 1, 0, newRow);
             reconcile(state);
-            setStatus('<b>Inserted</b> a new row — auto-filled the gap to the next clip.');
+            setStatus('<b>已插入</b>新列 — 自動填充到下一片段的間隙。');
           }, 1100);
         }
 
         function opDelete() {
-          setStep('delete', 'DELETE  ⌫', '🗑');
-          setStatus('Click <b>🗑</b> to remove the empty row.');
+          setStep('delete', '刪除  ⌫', '🗑');
+          setStatus('點擊 <b>🗑</b> 刪除空列。');
           // Highlight the empty inserted row (last one, since we just added it).
           state = state.map(function (r) {
             return Object.assign({}, r, r.empty ? { active: true, hot: 'delete' } : {});
@@ -2286,13 +2281,13 @@
             state = state.filter(function (r) { return !r.empty; });
             state = state.map(function (r) { return Object.assign({}, r, { active: false, hot: null }); });
             reconcile(state);
-            setStatus('<b>Deleted.</b> Surrounding clips snap back together.');
+            setStatus('<b>已刪除。</b> 前後字幕自動銜接。');
           }, 1100);
         }
 
         function opMerge() {
-          setStep('merge', 'MERGE  ↑', '↑');
-          setStatus('Click <b>↑</b> on <b>row 03</b> to join it with the row above.');
+          setStep('merge', '合併  ↑', '↑');
+          setStatus('點擊 <b>↑</b> 讓<b>第 03 列</b>與上一列合併。');
           // The split created two contiguous rows (id 2 and the most recent split addition).
           // Find row-2 and the row right after it — that's the merge target.
           var ai = state.findIndex(function (r) { return r.id === 2; });
@@ -2314,13 +2309,13 @@
             });
             state = state.slice(0, ai).concat([merged], state.slice(bi + 1));
             reconcile(state);
-            setStatus('<b>Merged.</b> Texts joined with a single space, time spans both clips.');
+            setStatus('<b>已合併。</b> 文字以一個空格連接，時間覆蓋兩段。');
           }, 1100);
         }
 
         function opReset() {
-          setStep('idle', 'READY', '▸');
-          setStatus('Edits round-trip back to the timeline. <b>⌘Z</b> to undo.');
+          setStep('idle', '就緒', '▸');
+          setStatus('所有修改即時同步回時間軸。<b>⌘Z</b> 還原。');
           state = initialState();
           reconcile(state);
         }
@@ -2356,7 +2351,7 @@
 
         if (prefersReduced) {
           // Skip the loop: just show split-state as a static example.
-          setStep('split', 'SPLIT  ✂', '✂');
+          setStep('split', '拆分  ✂', '✂');
           setStatus('<b>Insert · split · merge · delete</b> — operations animate when motion is enabled.');
           return;
         }
