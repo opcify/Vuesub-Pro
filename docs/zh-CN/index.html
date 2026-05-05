@@ -1345,6 +1345,7 @@
         .reveal { opacity: 1; transform: none; }
       }
     
+      /* === build_i18n: lang css begin === */
       /* ─── Language switcher ─── */
       .lang-switch {
         display: inline-flex;
@@ -1373,7 +1374,11 @@
       }
 
       /* ─── Auto-detect banner ─── */
-      .lang-banner {
+      /* `:not([hidden])` makes the `hidden` HTML attribute actually win over
+       * this rule. Without it, .lang-banner's class-level specificity ties
+       * with the UA's [hidden] rule and (since site CSS loads later) the
+       * banner renders even when JS leaves `hidden` in place for non-zh users. */
+      .lang-banner:not([hidden]) {
         background: linear-gradient(135deg, rgba(74, 144, 255, 0.18), rgba(179, 136, 255, 0.16));
         border-bottom: 1px solid rgba(122, 176, 255, 0.3);
         padding: 12px 24px;
@@ -1414,7 +1419,8 @@
       @media (max-width: 700px) {
         .lang-banner { padding: 10px 16px; font-size: 13px; gap: 10px; }
       }
-    </style>
+      /* === build_i18n: lang css end === */
+</style>
   </head>
   <body>
     <div class="ambient" aria-hidden="true">
@@ -2387,6 +2393,7 @@
         els.forEach(function (el) { io.observe(el); });
       })();
 
+      // === build_i18n: lang js begin ===
       // Persist explicit language choice when the switcher is clicked.
       (function () {
         document.querySelectorAll('.lang-item[data-lang]').forEach(function (a) {
@@ -2422,6 +2429,7 @@
           try { localStorage.setItem('vuesubLang', isHant ? 'zh-TW' : 'zh-CN'); } catch (e) {}
         });
       })();
+      // === build_i18n: lang js end ===
     </script>
   </body>
 </html>
