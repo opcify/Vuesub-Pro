@@ -8,6 +8,10 @@
     <meta property="og:title" content="Vuesub" />
     <meta property="og:description" content="Audio to subtitles + zero-shot voice cloning. Offline by default. Whisper · CosyVoice 3." />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content="icon.png" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <style>
       :root {
         --bg: #0b0b0d;
@@ -81,12 +85,12 @@
       }
       .nav-mark {
         width: 26px; height: 26px;
-        border-radius: 7px;
-        background: linear-gradient(135deg, var(--accent), #2563eb);
-        color: white;
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: 14px;
-        box-shadow: 0 4px 12px rgba(74, 144, 255, 0.32);
+        display: block;
+        object-fit: contain;
+        /* The icon image already supplies the squircle + gradient; the soft
+         * outer glow grounds it against the dark page background. */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+        border-radius: 6px;
       }
       .nav-links {
         display: flex; gap: 22px;
@@ -515,7 +519,7 @@
     <nav class="nav">
       <div class="nav-inner">
         <a class="nav-logo" href="#top">
-          <span class="nav-mark">V</span>
+          <img class="nav-mark" src="icon.png" alt="" width="26" height="26" />
           <span>Vuesub</span>
         </a>
         <div class="nav-links">
@@ -845,7 +849,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="nav-logo">
-            <span class="nav-mark">V</span>
+            <img class="nav-mark" src="icon.png" alt="" width="26" height="26" />
             <span>Vuesub</span>
           </div>
           <p>Local-first audio &amp; video tooling for macOS, Windows, and Linux. Powered by Whisper and CosyVoice.</p>
